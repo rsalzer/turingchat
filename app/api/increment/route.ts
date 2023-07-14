@@ -1,10 +1,9 @@
-import Redis from "ioredis";
 import { NextResponse } from "next/server";
+import { Redis } from "@upstash/redis";
 
-const redis = new Redis(process.env.REDIS_URL, {
-  tls: {
-    rejectUnauthorized: false,
-  },
+const redis = new Redis({
+  url: process.env.REDIS_REST_URL,
+  token: process.env.REDIS_REST_TOKEN,
 });
 
 export async function POST() {
