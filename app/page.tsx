@@ -1,10 +1,14 @@
 "use client";
 
 import { useChat } from "ai/react";
+// import Redis from "ioredis";
+import { useEffect, useState } from "react";
 
 type MessageProps = {
   message: string;
 };
+
+// const redis = new Redis(process.env.REDIS_URL);
 const OpenAIMessage = ({ message }: MessageProps) => {
   return (
     <div className="px-3 @md:py-4 py-2.5 group transition-opacity message">
@@ -56,10 +60,29 @@ const UserMessage = ({ message }: MessageProps) => {
   );
 };
 export default function Chat() {
+  const [count, setCount] = useState();
   const { messages, input, handleInputChange, handleSubmit } = useChat();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/increment", { method: "GET" });
+      const data = await response.json();
+      setCount(data.count);
+    };
+    fetchData().catch(console.error);
+  }, []);
+
+  const increment = async () => {
+    const response = await fetch("/api/increment", { method: "POST" });
+    const data = await response.json();
+    setCount(data.count);
+  };
 
   return (
     <div className="h-full w-full overflow-hidden">
+      <div className="text-9xl text-red-900" onClick={increment}>
+        Count: {count}
+      </div>
       <div className="flex flex-no-wrap flex-col h-full overflow-y-auto">
         <div className="min-w-0 flex-1">
           <div className="scrolling-touch scrolling-gpu h-full w-full relative overflow-auto pb-12 overscroll-y-auto">
