@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
 
-const redis = new Redis({
-  url: process.env.REDIS_REST_URL,
-  token: process.env.REDIS_REST_TOKEN,
-});
+const redis = Redis.fromEnv();
 
 export async function POST() {
   const count = await redis.incr("counter");
