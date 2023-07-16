@@ -87,7 +87,9 @@ const Chat = ({ wordsToCheck, promptToSet, wordsFound }: ChatProps) => {
         </div>
         <div className="flex-shrink-0 min-h-0 min-w-100 sticky bottom-0">
           <div className="p-3 pr-2.5 bg-white/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
-            <button onClick={() => start()}>Restart</button>
+            <button className="text-blue-600" onClick={() => start()}>
+              Restart
+            </button>
             {/*  <form*/}
             {/*    className="relative flex items-center max-w-2xl mx-auto"*/}
             {/*    onSubmit={handleSubmit}*/}
