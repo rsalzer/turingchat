@@ -52,10 +52,16 @@ export default function Counter({
     <div className="text-2xl text-red-900">
       {words.map((word: string) => (
         <div onClick={() => increment([word])} key={word}>
-          {word}: {count.hasOwnProperty(word) ? count[word] : 0}
+          {word}:{" "}
+          {count.hasOwnProperty(word) ? count[word as keyof typeof count] : 0}
         </div>
       ))}
-      <div>TOTAL: {count.hasOwnProperty("TOTAL") ? count["TOTAL"] : 0}</div>
+      <div>
+        TOTAL:{" "}
+        {count.hasOwnProperty("TOTAL")
+          ? count["TOTAL" as keyof typeof count]
+          : 0}
+      </div>
     </div>
   );
 }
