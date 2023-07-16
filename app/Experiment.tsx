@@ -25,7 +25,7 @@ const Experiment = ({ chosenExperiment }: ExperimentProps) => {
       <h3 className="font-bold text-xl my-3">
         Experiment: {chosenExperiment.name}
       </h3>
-      <div className="flex gap-10">
+      <div className="flex gap-10 md:flex-row flex-col">
         <Counter
           hashName={chosenExperiment.name}
           words={chosenExperiment.words}
