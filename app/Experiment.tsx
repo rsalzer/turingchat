@@ -11,8 +11,8 @@ type ExperimentProps = {
 };
 
 const Experiment = ({ chosenExperiment }: ExperimentProps) => {
-  const [wordsToIncrement, setWordsToIncrement] = useState([]);
-  const wordsFound = (words) => {
+  const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
+  const wordsFound = (words: string[]) => {
     setWordsToIncrement(words);
   };
 
