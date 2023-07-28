@@ -1,16 +1,21 @@
+"use client";
+
 import Counter from "@/app/Counter";
 import Chat from "@/app/Chat";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-type ExperimentProps = {
-  chosenExperiment: {
-    name: string;
-    words: string[];
-    prompt: string;
-  };
+export type ExperimentType = {
+  name: string;
+  words: string[];
+  prompt: string;
 };
 
-const Experiment = ({ chosenExperiment }: ExperimentProps) => {
+type ExperimentProps = {
+  chosenExperiment: ExperimentType;
+  initialCount: Record<string, any>;
+};
+
+const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const wordsFound = (words: string[]) => {
     setWordsToIncrement(words);
@@ -30,6 +35,7 @@ const Experiment = ({ chosenExperiment }: ExperimentProps) => {
           hashName={chosenExperiment.name}
           words={chosenExperiment.words}
           wordsToIncrement={wordsToIncrement}
+          initialCount={initialCount}
         />
         <Chat
           wordsToCheck={chosenExperiment.words}

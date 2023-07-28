@@ -1,16 +1,20 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 type CounterProps = {
   hashName: string;
   words: string[];
   wordsToIncrement: string[];
+  initialCount: Record<string, any>;
 };
 export default function Counter({
   hashName,
   words,
   wordsToIncrement,
+  initialCount,
 }: CounterProps) {
-  const [count, setCount] = useState<object>({});
+  const [count, setCount] = useState(initialCount);
 
   const increment = async (keys: string[]) => {
     const response = await fetch("/api/increment", {
@@ -51,17 +55,15 @@ export default function Counter({
   return (
     <div className="text-2xl text-red-900">
       {words.map((word: string) => (
-        <div onClick={() => increment([word])} key={word}>
+        <div
+          onClick={() => increment([word])}
+          key={word}
+          className={`${wordsToIncrement.includes(word) ? "font-bold" : ""}`}
+        >
           {word}:{" "}
           {count.hasOwnProperty(word) ? count[word as keyof typeof count] : 0}
         </div>
       ))}
-      <div>
-        TOTAL:{" "}
-        {count.hasOwnProperty("TOTAL")
-          ? count["TOTAL" as keyof typeof count]
-          : 0}
-      </div>
     </div>
   );
 }

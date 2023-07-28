@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Link from "next/link";
+import experiments from "../public/experiments.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de">
+    <html className="antialiased h-full" lang="de">
       <head>
         <link
           rel="icon"
@@ -23,6 +25,7 @@ export default function RootLayout({
           // href="https://www.turingagency.org/media/site/dbd2066069-1677497962/favicon-16x16.png"
           sizes="16x16"
         />
+        <title></title>
         {/*<link*/}
         {/*  rel="icon"*/}
         {/*  type="image/png"*/}
@@ -46,7 +49,23 @@ export default function RootLayout({
         {/*  href="https://www.turingagency.org/media/site/1247b213e9-1677497962/favicon-152x152.png"*/}
         {/*/>*/}
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} h-full`}>
+        <header className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+          <h1 className="font-bold text-2xl">BIAS-Tester</h1>
+          <div className="flex space-x-4 items-center ">
+            {experiments.map((experiment, i) => (
+              <Link
+                className="text-blue-500 font-medium text-sm"
+                href={`/experiment/${i}`}
+                key={i}
+              >
+                {experiment.name}
+              </Link>
+            ))}
+          </div>
+        </header>
+        <div className="px-6">{children}</div>
+      </body>
     </html>
   );
 }
