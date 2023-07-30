@@ -8,7 +8,7 @@ export type ExperimentType = {
   name: string;
   words: string[];
   prompt: string;
-  userDecides: boolean;
+  userDecides?: boolean;
 };
 
 type ExperimentProps = {
