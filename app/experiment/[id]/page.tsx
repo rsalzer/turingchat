@@ -5,6 +5,8 @@ import Experiment from "@/app/experiment/[id]/Experiment";
 
 const redis = Redis.fromEnv();
 
+export const revalidate = 0;
+
 // async function increment(words: string[]) {
 //   "use server";
 //
@@ -21,16 +23,15 @@ export default async function ExperimentPage({
 }) {
   const chosenExperiment = experiments[params.id];
   if (!chosenExperiment) return <div>Experiment not found</div>;
-  const initialCount = await redis.hgetall(chosenExperiment.name);
+  let initialCount = await redis.hgetall(chosenExperiment.name);
+  if (initialCount == null) initialCount = [] as Record<string, any>;
 
   return (
     <div>
-      {initialCount != null && (
-        <Experiment
-          chosenExperiment={chosenExperiment}
-          initialCount={initialCount}
-        />
-      )}
+      <Experiment
+        chosenExperiment={chosenExperiment}
+        initialCount={initialCount}
+      />
     </div>
   );
 }

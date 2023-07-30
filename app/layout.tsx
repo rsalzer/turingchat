@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 import experiments from "../public/experiments.json";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -54,13 +53,13 @@ export default function RootLayout({
           <h1 className="font-bold text-2xl">BIAS-Tester</h1>
           <div className="flex space-x-4 items-center ">
             {experiments.map((experiment, i) => (
-              <Link
+              <a
                 className="text-blue-500 font-medium text-sm"
                 href={`/experiment/${i}`}
                 key={i}
               >
                 {experiment.name}
-              </Link>
+              </a>
             ))}
           </div>
         </header>

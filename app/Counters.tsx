@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Counter from "@/components/Counter";
 
 type CounterProps = {
   hashName: string;
@@ -8,7 +9,7 @@ type CounterProps = {
   wordsToIncrement: string[];
   initialCount: Record<string, any>;
 };
-export default function Counter({
+export default function Counters({
   hashName,
   words,
   wordsToIncrement,
@@ -45,7 +46,7 @@ export default function Counter({
   }, [hashName, words]);
 
   useEffect(() => {
-    console.log("Increment the words:", wordsToIncrement);
+    // console.log("Increment the words:", wordsToIncrement);
     const wordsPlusTotal = [...wordsToIncrement, "TOTAL"];
     if (wordsToIncrement.length > 0) {
       increment(wordsPlusTotal);
@@ -53,15 +54,26 @@ export default function Counter({
   }, [wordsToIncrement]);
 
   return (
-    <div className="text-2xl text-red-900">
+    <div className="text-2xl">
       {words.map((word: string) => (
         <div
-          onClick={() => increment([word])}
+          className={`flex justify-between gap-3 items-center ${
+            wordsToIncrement.includes(word) ? "text-red-600" : ""
+          }`}
           key={word}
-          className={`${wordsToIncrement.includes(word) ? "font-bold" : ""}`}
         >
-          {word}:{" "}
-          {count.hasOwnProperty(word) ? count[word as keyof typeof count] : 0}
+          <div
+            className={`${
+              wordsToIncrement.includes(word) ? "text-red-600" : ""
+            }`}
+          >
+            {word}:{" "}
+          </div>
+          <Counter
+            value={
+              count.hasOwnProperty(word) ? count[word as keyof typeof count] : 0
+            }
+          />
         </div>
       ))}
     </div>
