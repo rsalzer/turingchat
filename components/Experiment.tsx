@@ -1,7 +1,7 @@
 "use client";
 
-import Counters from "@/app/Counters";
-import Chat from "@/app/Chat";
+import Counters from "@/components/Counters";
+import GuidedChat from "@/components/GuidedChat";
 import React, { useEffect, useState } from "react";
 
 export type ExperimentType = {
@@ -17,9 +17,10 @@ type ExperimentProps = {
 };
 
 const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
-  console.log("Initial Count", initialCount);
+  console.log(chosenExperiment);
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const wordsFound = (words: string[]) => {
+    console.log("Words found:", words);
     setWordsToIncrement(words);
   };
 
@@ -39,7 +40,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
           wordsToIncrement={wordsToIncrement}
           initialCount={initialCount}
         />
-        <Chat
+        <GuidedChat
           wordsToCheck={chosenExperiment.words}
           promptToSet={chosenExperiment.prompt}
           wordsFound={wordsFound}

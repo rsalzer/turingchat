@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { ExperimentType } from "@/components/Experiment";
 import experiments from "../public/experiments.json";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -9,11 +10,18 @@ export const metadata = {
   description: "Ein Chat der Turingagency.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const experiments: [ExperimentType[]] = await redis.json.get(
+  //   "experiments",
+  //   "$"
+  // );
+  // const experimentsToUse = experiments[0];
+  const experimentsToUse = experiments;
+
   return (
     <html className="antialiased h-full" lang="de">
       <head>
@@ -52,7 +60,7 @@ export default function RootLayout({
         <header className="px-6 py-3 bg-gray-100 border-b border-gray-300">
           <h1 className="font-bold text-2xl">BIAS-Tester</h1>
           <div className="flex space-x-4 items-center ">
-            {experiments.map((experiment, i) => (
+            {experimentsToUse.map((experiment: ExperimentType, i: number) => (
               <a
                 className="text-blue-500 font-medium text-sm"
                 href={`/experiment/${i}`}
@@ -61,9 +69,12 @@ export default function RootLayout({
                 {experiment.name}
               </a>
             ))}
+            <a className="text-blue-500 font-medium text-sm" href={`/chat`}>
+              Freier Chat
+            </a>
           </div>
         </header>
-        <div className="px-6">{children}</div>
+        <div className="px-6 h-4/5">{children}</div>
       </body>
     </html>
   );

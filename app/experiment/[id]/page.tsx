@@ -1,7 +1,7 @@
 import React from "react";
-import experiments from "../../../public/experiments.json";
 import { Redis } from "@upstash/redis";
-import Experiment from "@/app/experiment/[id]/Experiment";
+import Experiment from "@/components/Experiment";
+import experiments from "../../../public/experiments.json";
 
 const redis = Redis.fromEnv();
 
@@ -21,7 +21,8 @@ export default async function ExperimentPage({
 }: {
   params: { id: number };
 }) {
-  const chosenExperiment = experiments[params.id];
+  // const experiments = await redis.json.get("experiments", "$");
+  const chosenExperiment = experiments[params.id]; // experiments[0][params.id];
   if (!chosenExperiment) return <div>Experiment not found</div>;
   let initialCount = await redis.hgetall(chosenExperiment.name);
   if (initialCount == null) initialCount = [] as Record<string, any>;
