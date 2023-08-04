@@ -7,15 +7,6 @@ const redis = Redis.fromEnv();
 
 export const revalidate = 0;
 
-// async function increment(words: string[]) {
-//   "use server";
-//
-//   for (const word of words) {
-//     await redis.hincrby(chosenExperiment.name, word, 1);
-//   }
-//
-//   revalidatePath("/");
-// }
 export default async function ExperimentPage({
   params,
 }: {
