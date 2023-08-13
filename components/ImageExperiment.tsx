@@ -60,7 +60,9 @@ const ImageExperiment = ({
           <h3>Prompt: {chosenExperiment.prompt}</h3>
           {imgUrl ? (
             <div>
-              <img src={imgUrl} alt={chosenExperiment.prompt} />
+              <div className="w-[256px] h-[256px] bg-amber-300 flex justify-center items-center">
+                <img src={imgUrl} alt={chosenExperiment.prompt} />
+              </div>
               {showOkNotOk ? (
                 <div className="text-xl w-max flex flex-col items-center m-auto">
                   <div className="font-bold">Entscheiden Sie: </div>
@@ -93,7 +95,7 @@ const ImageExperiment = ({
               )}
             </div>
           ) : (
-            <div className="w-[512px] h-[512px] bg-amber-300 flex justify-center items-center">
+            <div className="w-[256px] h-[256px] bg-amber-300 flex justify-center items-center">
               Generiere...
             </div>
           )}

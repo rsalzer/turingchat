@@ -6,11 +6,12 @@ import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
 
 const FreeChat = () => {
-  const { messages, handleInputChange, handleSubmit, input } = useChat({
-    headers: {
-      type: "nolog",
-    },
-  });
+  const { messages, handleInputChange, setInput, handleSubmit, input } =
+    useChat({
+      headers: {
+        type: "nolog",
+      },
+    });
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -21,9 +22,9 @@ const FreeChat = () => {
   }, [messages]);
 
   return (
-    <div className="overflow-hidden flex flex-col h-full">
+    <div className="overflow-hidden flex flex-col h-[calc(100%-60px)]">
       <div
-        className="flex flex-no-wrap flex-col h-full overflow-y-auto"
+        className="flex flex-no-wrap flex-col overflow-y-auto h-full"
         ref={scrollRef}
       >
         <div className="min-w-0 flex-1">
@@ -49,6 +50,11 @@ const FreeChat = () => {
           <form
             className="relative flex items-center max-w-2xl mx-auto"
             onSubmit={handleSubmit}
+            onKeyUp={(e) => {
+              if (e.key === "ArrowUp" && messages.length > 0) {
+                setInput(messages[messages.length - 2].content);
+              }
+            }}
           >
             <input
               type="text"

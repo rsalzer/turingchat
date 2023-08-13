@@ -9,6 +9,7 @@ export type ExperimentType = {
   words: string[];
   prompt: string;
   userDecides?: boolean;
+  type: "text" | "image";
 };
 
 type ExperimentProps = {

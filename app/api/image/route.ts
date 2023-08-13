@@ -9,7 +9,7 @@ async function getData(prompt: string) {
   const response = await openai.createImage({
     prompt: prompt,
     n: 1,
-    size: "512x512",
+    size: "256x256",
   });
   return response.data;
 }

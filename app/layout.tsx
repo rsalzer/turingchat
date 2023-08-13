@@ -20,7 +20,14 @@ export default async function RootLayout({
   //   "$"
   // );
   // const experimentsToUse = experiments[0];
-  const experimentsToUse = experiments;
+  const experimentsToUse = experiments as ExperimentType[];
+
+  const textEperiments = experimentsToUse.filter(
+    (experiment) => experiment.type === "text"
+  );
+  const imageExperiments = experimentsToUse.filter(
+    (experiment) => experiment.type === "image"
+  );
 
   return (
     <html className="antialiased h-full" lang="de">
@@ -59,25 +66,48 @@ export default async function RootLayout({
       <body className={`${inter.className} h-full`}>
         <header className="px-6 py-3 bg-gray-100 border-b border-gray-300">
           <h1 className="font-bold text-2xl">BIAS-Tester</h1>
-          <div className="flex space-x-6 items-center ">
-            {experimentsToUse.map((experiment: ExperimentType, i: number) => (
+        </header>
+        <main className="flex h-[calc(100vh-73px)]">
+          <div className="flex items-start flex-col m-6 gap-2">
+            <b>Text-Experimente</b>
+            {textEperiments.map((experiment: ExperimentType, i: number) => (
               <a
                 className="text-blue-500 font-medium text-sm"
-                href={`/experiment/${i}`}
                 key={i}
+                href={
+                  experiment.type === "image"
+                    ? `/image/${i}`
+                    : `/experiment/${i}`
+                }
               >
                 {experiment.name}
               </a>
             ))}
-            <a className="text-blue-500 font-medium text-sm" href={`/chat`}>
-              Freier Chat
+            <a
+              className="text-blue-500 font-medium text-sm mt-4"
+              href={`/chat`}
+            >
+              <i>Freier Chat</i>
             </a>
-            <a className="text-blue-500 font-medium text-sm" href={`/image`}>
-              Familie bei Dall-E
+            <b className="mt-4">Bild-Experimente</b>
+            {imageExperiments.map((experiment: ExperimentType, i: number) => (
+              <a
+                className="text-blue-500 font-medium text-sm"
+                key={i}
+                href={`/image/${textEperiments.length + i}`}
+              >
+                {experiment.name}
+              </a>
+            ))}
+            <a
+              className="text-blue-500 font-medium text-sm mt-4"
+              href={`/image`}
+            >
+              <i>Freies Bild</i>
             </a>
           </div>
-        </header>
-        <div className="px-6 h-4/5">{children}</div>
+          <div className="px-6 h-full my-4 flex-1">{children}</div>
+        </main>
       </body>
     </html>
   );
