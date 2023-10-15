@@ -1,9 +1,8 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+
 import { ExperimentType } from "@/components/Experiment";
 import experiments from "../public/experiments.json";
-
-const inter = Inter({ subsets: ["latin"] });
+import { boldFont, headingFont } from "@/app/fonts";
 
 export const metadata = {
   title: "Turingchat",
@@ -63,12 +62,12 @@ export default async function RootLayout({
         {/*  href="https://www.turingagency.org/media/site/1247b213e9-1677497962/favicon-152x152.png"*/}
         {/*/>*/}
       </head>
-      <body className={`${inter.className} h-full`}>
+      <body className={`${boldFont.className} h-full`}>
         <header className="px-6 py-3 bg-gray-100 border-b border-gray-300">
-          <h1 className="font-bold text-2xl">BIAS-Tester</h1>
+          <h1 className={`${headingFont.className} text-2xl`}>BIAS-Tester</h1>
         </header>
         <main className="flex h-[calc(100vh-73px)]">
-          <div className="flex items-start flex-col m-6 gap-2">
+          <div className="flex items-start flex-col m-6 gap-0.25">
             <b>Text-Experimente</b>
             {textEperiments.map((experiment: ExperimentType, i: number) => (
               <a

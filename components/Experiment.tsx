@@ -3,6 +3,7 @@
 import Counters from "@/components/Counters";
 import GuidedChat from "@/components/GuidedChat";
 import React, { useEffect, useState } from "react";
+import { headingFont } from "@/app/fonts";
 
 export type ExperimentType = {
   name: string;
@@ -31,7 +32,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
 
   return (
     <div>
-      <h3 className="font-bold text-xl my-3">
+      <h3 className={`${headingFont.className} text-xl my-3`}>
         Experiment: {chosenExperiment.name}
       </h3>
       <div className="flex gap-10 md:flex-row flex-col">

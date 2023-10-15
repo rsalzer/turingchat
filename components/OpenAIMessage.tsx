@@ -1,3 +1,5 @@
+import { normalFont } from "@/app/fonts";
+
 type MessageProps = {
   message: string;
 };
@@ -16,7 +18,9 @@ export const OpenAIMessage = ({ message }: MessageProps) => {
           </svg>
         </div>
         <div className="w-full min-w-0 text-sm sm:text-base">
-          <div className="prose prose-stone prose-sm sm:prose-base prose-pre:rounded-md prose-p:whitespace-pre-wrap prose-p:break-words w-full flex-1 leading-6 prose-p:leading-7 prose-pre:bg-[#282c34] max-w-full __className_1822b0">
+          <div
+            className={`${normalFont.className} prose prose-stone prose-sm sm:prose-base prose-pre:rounded-md prose-p:whitespace-pre-wrap prose-p:break-words w-full flex-1 leading-6 prose-p:leading-7 prose-pre:bg-[#282c34] max-w-full __className_1822b0`}
+          >
             <p dangerouslySetInnerHTML={{ __html: message }}></p>
           </div>
         </div>
