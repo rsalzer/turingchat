@@ -22,7 +22,7 @@ const FreeChat = () => {
   }, [messages]);
 
   return (
-    <div className="overflow-hidden flex flex-col h-[calc(100%-60px)]">
+    <div className="overflow-hidden flex flex-col h-[calc(100%-60px)] max-w-2xl">
       <div
         className="flex flex-no-wrap flex-col overflow-y-auto h-full"
         ref={scrollRef}
@@ -61,7 +61,7 @@ const FreeChat = () => {
               className="rounded-md flex-1 sm:text-sm text-base bg-zinc-200/50 border border-zinc-200/80 resize-none scroll-m-2 transition-colors focus:border-zinc-400 focus:ring-0 focus:outline-none p-6 pr-24"
               spellCheck="false"
               value={input}
-              placeholder="Say something..."
+              placeholder="Tippe hier... (dann Senden klicken oder Enter drücken)"
               onChange={handleInputChange}
             ></input>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex gap-1 @sm:gap-2 items-center justify-end">
@@ -71,7 +71,7 @@ const FreeChat = () => {
                 data-projection-id="11"
                 style={{ width: "70px" }}
               >
-                Send
+                Senden
               </button>
             </div>
           </form>

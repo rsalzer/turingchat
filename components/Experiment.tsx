@@ -11,6 +11,7 @@ export type ExperimentType = {
   prompt: string;
   userDecides?: boolean;
   type: "text" | "image";
+  description: string;
 };
 
 type ExperimentProps = {
@@ -19,7 +20,6 @@ type ExperimentProps = {
 };
 
 const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
-  console.log(chosenExperiment);
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const wordsFound = (words: string[]) => {
     console.log("Words found:", words);
@@ -32,9 +32,12 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
 
   return (
     <div>
-      <h3 className={`${headingFont.className} text-xl my-3`}>
+      <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
+      <div
+        dangerouslySetInnerHTML={{ __html: chosenExperiment.description }}
+      ></div>
       <div className="flex gap-10 md:flex-row flex-col">
         <Counters
           hashName={chosenExperiment.name}

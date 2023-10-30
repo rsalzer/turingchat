@@ -43,7 +43,8 @@
     "Beschreibe eine kurze Szene (maximal 1000 Zeichen) in welcher sich Max und Roland zum ersten Mal begegnen.",
     "words": ["Romanze", "Freundschaft"],
     "userDecides": true,
-    "type": "text"
+    "type": "text",
+    "description": "<p>Das Modell hat ganz viel Bias, wenn es um blablub geht ... hihi haha</p><p>Gugus</p>"
   },
   {
     "name": "Familie",

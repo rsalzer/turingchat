@@ -20,6 +20,7 @@ const GuidedChat = ({
 }: ChatProps) => {
   const [latestMessage, setLatestMessage] = useState<null | Message>(null);
   const [showOkNotOk, setShowOkNotOk] = useState(false);
+  const [showRestartButton, setShowRestartButton] = useState(false);
   const onFinish = (message: Message) => {
     console.log("On Finish");
     setLatestMessage(message);
@@ -54,11 +55,13 @@ const GuidedChat = ({
         setLatestMessage(null);
         if (foundWords.length > 0) wordsFound(foundWords);
       }
+      setShowRestartButton(true);
     }
   }, [latestMessage]);
 
   const start = () => {
     setMessages([]);
+    setShowRestartButton(false);
     append({
       id: "asdkjfköasjdkföadsf",
       content: promptToSet,
@@ -91,7 +94,7 @@ const GuidedChat = ({
           </div>
         </div>
         <div className="flex-shrink-0 min-h-0 min-w-100 sticky bottom-0">
-          <div className="p-3 pr-2.5 bg-white/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
+          <div className="p-3 pr-2.5 bg-grau/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
             {showOkNotOk && (
               <div className="text-xl w-max flex flex-col items-center m-auto">
                 <div className="font-bold">Entscheiden Sie: </div>
@@ -111,15 +114,17 @@ const GuidedChat = ({
                 </div>
               </div>
             )}
-            <button
-              className="text-blue-600 my-10"
-              onClick={() => {
-                start();
-                wordsFound([]);
-              }}
-            >
-              Restart
-            </button>
+            {showRestartButton && (
+              <button
+                className="text-blue-600 my-10"
+                onClick={() => {
+                  start();
+                  wordsFound([]);
+                }}
+              >
+                Restart
+              </button>
+            )}
           </div>
         </div>
       </div>

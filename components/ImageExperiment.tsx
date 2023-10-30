@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Counters from "@/components/Counters";
+import { headingFont } from "@/app/fonts";
 
 export type ImageExperimentType = {
   name: string;
@@ -46,7 +47,7 @@ const ImageExperiment = ({
 
   return (
     <div>
-      <h3 className="font-bold text-xl my-3">
+      <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
       <div className="flex gap-10 md:flex-row flex-col">
@@ -95,8 +96,8 @@ const ImageExperiment = ({
               )}
             </div>
           ) : (
-            <div className="w-[256px] h-[256px] bg-amber-300 flex justify-center items-center">
-              Generiere...
+            <div className="w-[256px] h-[256px] bg-rosa flex justify-center items-center">
+              Generiere Bild...
             </div>
           )}
         </div>

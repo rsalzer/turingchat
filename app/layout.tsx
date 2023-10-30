@@ -62,16 +62,20 @@ export default async function RootLayout({
         {/*  href="https://www.turingagency.org/media/site/1247b213e9-1677497962/favicon-152x152.png"*/}
         {/*/>*/}
       </head>
-      <body className={`${boldFont.className} h-full`}>
-        <header className="px-6 py-3 bg-gray-100 border-b border-gray-300">
-          <h1 className={`${headingFont.className} text-2xl`}>BIAS-Tester</h1>
+      <body className={`${boldFont.className} h-full bg-grau`}>
+        <header className="px-6 py-3 bg-rosa border-b border-gray-300">
+          <a href="/">
+            <h1 className={`${headingFont.className} text-2xl text-rot`}>
+              BIAS-Tester
+            </h1>
+          </a>
         </header>
-        <main className="flex h-[calc(100vh-73px)]">
+        <main className="flex h-[calc(100vh-73px)] bg-grau">
           <div className="flex items-start flex-col m-6 gap-0.25">
-            <b>Text-Experimente</b>
+            <div className={"text-rot"}>Text-Experimente</div>
             {textEperiments.map((experiment: ExperimentType, i: number) => (
               <a
-                className="text-blue-500 font-medium text-sm"
+                className="text-black font-medium text-sm hover:text-rot"
                 key={i}
                 href={
                   experiment.type === "image"
@@ -83,15 +87,15 @@ export default async function RootLayout({
               </a>
             ))}
             <a
-              className="text-blue-500 font-medium text-sm mt-4"
+              className="text-black hover:text-rot font-medium text-sm mt-4"
               href={`/chat`}
             >
               <i>Freier Chat</i>
             </a>
-            <b className="mt-4">Bild-Experimente</b>
+            <b className="mt-4 text-rot">Bild-Experimente</b>
             {imageExperiments.map((experiment: ExperimentType, i: number) => (
               <a
-                className="text-blue-500 font-medium text-sm"
+                className="text-black hover:text-rot font-medium text-sm"
                 key={i}
                 href={`/image/${textEperiments.length + i}`}
               >
@@ -99,13 +103,13 @@ export default async function RootLayout({
               </a>
             ))}
             <a
-              className="text-blue-500 font-medium text-sm mt-4"
+              className="text-black hover:text-rot font-medium text-sm mt-4"
               href={`/image`}
             >
               <i>Freies Bild</i>
             </a>
           </div>
-          <div className="px-6 h-full my-4 flex-1">{children}</div>
+          <div className="px-6 my-4 flex-1">{children}</div>
         </main>
       </body>
     </html>
