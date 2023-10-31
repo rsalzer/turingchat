@@ -3,6 +3,7 @@ import "./globals.css";
 import { ExperimentType } from "@/components/Experiment";
 import experiments from "../public/experiments.json";
 import { boldFont, headingFont } from "@/app/fonts";
+import Navigation from "@/components/Navigation";
 
 export const metadata = {
   title: "Turingchat",
@@ -20,6 +21,7 @@ export default async function RootLayout({
   // );
   // const experimentsToUse = experiments[0];
   const experimentsToUse = experiments as ExperimentType[];
+  experimentsToUse.forEach((experiment, index) => (experiment.id = index));
 
   const textEperiments = experimentsToUse.filter(
     (experiment) => experiment.type === "text"
@@ -38,7 +40,7 @@ export default async function RootLayout({
           // href="https://www.turingagency.org/media/site/dbd2066069-1677497962/favicon-16x16.png"
           sizes="16x16"
         />
-        <title></title>
+        <title>Dark Corners - Der Bias-Tester</title>
         {/*<link*/}
         {/*  rel="icon"*/}
         {/*  type="image/png"*/}
@@ -66,49 +68,15 @@ export default async function RootLayout({
         <header className="px-6 py-3 bg-rosa border-b border-gray-300">
           <a href="/">
             <h1 className={`${headingFont.className} text-2xl text-rot`}>
-              BIAS-Tester
+              DARK CORNERS - Der Bias-Tester
             </h1>
           </a>
         </header>
         <main className="flex h-[calc(100vh-73px)] bg-grau">
-          <div className="flex items-start flex-col m-6 gap-0.25">
-            <div className={"text-rot"}>Text-Experimente</div>
-            {textEperiments.map((experiment: ExperimentType, i: number) => (
-              <a
-                className="text-black font-medium text-sm hover:text-rot"
-                key={i}
-                href={
-                  experiment.type === "image"
-                    ? `/image/${i}`
-                    : `/experiment/${i}`
-                }
-              >
-                {experiment.name}
-              </a>
-            ))}
-            <a
-              className="text-black hover:text-rot font-medium text-sm mt-4"
-              href={`/chat`}
-            >
-              <i>Freier Chat</i>
-            </a>
-            <b className="mt-4 text-rot">Bild-Experimente</b>
-            {imageExperiments.map((experiment: ExperimentType, i: number) => (
-              <a
-                className="text-black hover:text-rot font-medium text-sm"
-                key={i}
-                href={`/image/${textEperiments.length + i}`}
-              >
-                {experiment.name}
-              </a>
-            ))}
-            <a
-              className="text-black hover:text-rot font-medium text-sm mt-4"
-              href={`/image`}
-            >
-              <i>Freies Bild</i>
-            </a>
-          </div>
+          <Navigation
+            imageExperiments={imageExperiments}
+            textExperiments={textEperiments}
+          />
           <div className="px-6 my-4 flex-1">{children}</div>
         </main>
       </body>

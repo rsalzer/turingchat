@@ -1,12 +1,13 @@
 import { normalFont } from "@/app/fonts";
+import { PropsWithChildren } from "react";
 
-type MessageProps = {
-  message: string;
-};
-export const OpenAIMessage = ({ message }: MessageProps) => {
+type MessageProps = {};
+export const OpenAIMessage = ({
+  children,
+}: PropsWithChildren<MessageProps>) => {
   return (
     <div className="px-3 @md:py-4 py-2.5 group transition-opacity message">
-      <div className="flex items-start max-w-2xl mx-auto space-x-3">
+      <div className="flex items-start mx-auto space-x-3">
         <div className="w-6 h-6 flex flex-shrink-0 justify-center items-center mt-[2px]">
           <svg
             fill="currentColor"
@@ -21,7 +22,7 @@ export const OpenAIMessage = ({ message }: MessageProps) => {
           <div
             className={`${normalFont.className} prose prose-stone prose-sm sm:prose-base prose-pre:rounded-md prose-p:whitespace-pre-wrap prose-p:break-words w-full flex-1 leading-6 prose-p:leading-7 prose-pre:bg-[#282c34] max-w-full __className_1822b0`}
           >
-            <p dangerouslySetInnerHTML={{ __html: message }}></p>
+            {children}
           </div>
         </div>
       </div>

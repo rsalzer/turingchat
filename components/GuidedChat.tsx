@@ -5,22 +5,26 @@ import { Message } from "ai";
 import { useChat } from "ai/react";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
+import Button from "@/components/Button";
 
 type ChatProps = {
   wordsToCheck: string[];
   promptToSet: string;
   wordsFound: (words: string[]) => void;
   userDecides?: boolean;
+  goToNextExperiment: () => void;
 };
 const GuidedChat = ({
   wordsToCheck,
   promptToSet,
   wordsFound,
   userDecides = false,
+  goToNextExperiment,
 }: ChatProps) => {
   const [latestMessage, setLatestMessage] = useState<null | Message>(null);
   const [showOkNotOk, setShowOkNotOk] = useState(false);
   const [showRestartButton, setShowRestartButton] = useState(false);
+  const [wordFound, setWordFound] = useState<null | string>(null);
   const onFinish = (message: Message) => {
     console.log("On Finish");
     setLatestMessage(message);
@@ -62,6 +66,8 @@ const GuidedChat = ({
   const start = () => {
     setMessages([]);
     setShowRestartButton(false);
+    setShowOkNotOk(false);
+    setWordFound(null);
     append({
       id: "asdkjfköasjdkföadsf",
       content: promptToSet,
@@ -76,8 +82,8 @@ const GuidedChat = ({
   return (
     <div className="overflow-hidden">
       <div className="flex flex-no-wrap flex-col h-full overflow-y-auto">
-        <div className="min-w-0 flex-1">
-          <div className="scrolling-touch scrolling-gpu h-full w-full relative overflow-auto pb-12 overscroll-y-auto">
+        <div className="min-w-0 flex-1 max-w-4xl">
+          <div className="scrolling-touch scrolling-gpu h-full w-full relative overflow-auto overscroll-y-auto">
             <div className="divide-y">
               {messages.length > 0
                 ? messages.map((m) => (
@@ -85,7 +91,11 @@ const GuidedChat = ({
                       {m.role === "user" ? (
                         <UserMessage message={m.content} />
                       ) : (
-                        <OpenAIMessage message={m.content} />
+                        <OpenAIMessage>
+                          <p
+                            dangerouslySetInnerHTML={{ __html: m.content }}
+                          ></p>
+                        </OpenAIMessage>
                       )}
                     </div>
                   ))
@@ -94,36 +104,57 @@ const GuidedChat = ({
           </div>
         </div>
         <div className="flex-shrink-0 min-h-0 min-w-100 sticky bottom-0">
-          <div className="p-3 pr-2.5 bg-grau/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
+          <div className="p-3 pr-2.5 bg-grau/70 ">
             {showOkNotOk && (
-              <div className="text-xl w-max flex flex-col items-center m-auto">
-                <div className="font-bold">Entscheiden Sie: </div>
-                <div className="flex gap-3">
-                  {wordsToCheck.map((word) => (
-                    <button
-                      className="text-blue-600"
-                      onClick={() => {
-                        wordsFound([word]);
-                        setShowOkNotOk(false);
-                      }}
-                      key={word}
-                    >
-                      {word}
-                    </button>
-                  ))}
+              <>
+                <div className="text-xl flex flex-col m-auto bg-rosa py-4 px-4">
+                  <div className="text-l">
+                    Bei diesem Experiment müssen Sie bestimmen, ob der Bias
+                    vorhanden ist.
+                  </div>
+                  {wordFound != null ? (
+                    <>
+                      <div>
+                        Sie haben sich entschieden für:
+                        <br />
+                        <span className={"text-rot"}>{wordFound}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>Entscheiden Sie: </div>
+                      <div className="">
+                        {wordsToCheck.map((word) => (
+                          <Button
+                            onClick={() => {
+                              wordsFound([word]);
+                              setWordFound(word);
+                            }}
+                            key={word}
+                          >
+                            {word}
+                          </Button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
-              </div>
+              </>
             )}
             {showRestartButton && (
-              <button
-                className="text-blue-600 my-10"
-                onClick={() => {
-                  start();
-                  wordsFound([]);
-                }}
-              >
-                Restart
-              </button>
+              <div className={"px-4 py-4"}>
+                <Button
+                  onClick={() => {
+                    start();
+                    wordsFound([]);
+                  }}
+                >
+                  Nochmals generieren
+                </Button>
+                <Button onClick={goToNextExperiment}>
+                  Zum nächsten Experiment
+                </Button>
+              </div>
             )}
           </div>
         </div>

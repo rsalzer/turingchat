@@ -5,8 +5,10 @@ import GuidedChat from "@/components/GuidedChat";
 import React, { useEffect, useState } from "react";
 import { headingFont } from "@/app/fonts";
 import Instruction from "@/components/Instruction";
+import Button from "@/components/Button";
 
 export type ExperimentType = {
+  id: number;
   name: string;
   words: string[];
   prompt: string;
@@ -34,20 +36,13 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
 
   return (
     <div>
-      <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
+      <h3 className={`${headingFont.className} text-2xl mb-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
       {showInstructions ? (
         <div className={"max-w-2xl"}>
           <Instruction instruction={chosenExperiment.name} />
-          <button
-            className="text-blue-600 my-10"
-            onClick={() => {
-              setShowInstructions(false);
-            }}
-          >
-            Loslegen
-          </button>
+          <Button onClick={() => setShowInstructions(false)}>Loslegen</Button>
         </div>
       ) : (
         <>
@@ -63,6 +58,11 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
               promptToSet={chosenExperiment.prompt}
               wordsFound={wordsFound}
               userDecides={chosenExperiment.userDecides}
+              goToNextExperiment={() => {
+                const newLocation = chosenExperiment.id + 1;
+                console.log(newLocation);
+                window.location.href = "/experiment/" + newLocation;
+              }}
             />
           </div>
           {/*{wordsToIncrement.length > 0 && !showInstructions && (*/}

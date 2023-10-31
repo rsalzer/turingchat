@@ -4,7 +4,7 @@ type MessageProps = {
 export const UserMessage = ({ message }: MessageProps) => {
   return (
     <div className="px-3 @md:py-4 py-2.5 group transition-opacity message bg-rosa">
-      <div className="flex items-start max-w-2xl mx-auto space-x-3">
+      <div className="flex items-start mx-auto space-x-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { headingFont } from "@/app/fonts";
+import { UserMessage } from "@/components/UserMessage";
 
 const FreeImage = () => {
   const [imgUrl, setImgUrl] = useState<string>();
@@ -27,7 +28,7 @@ const FreeImage = () => {
         Freies Bild
       </h3>
       <div>
-        <h3>Prompt: {imagePrompt}</h3>
+        {imagePrompt && <UserMessage message={imagePrompt} />}
         <div className="w-[256px] h-[256px] bg-rosa flex justify-center items-center">
           {imgUrl ? (
             imgUrl === "generating" ? (
