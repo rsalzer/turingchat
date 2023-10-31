@@ -65,7 +65,7 @@ export default async function RootLayout({
         {/*/>*/}
       </head>
       <body className={`${boldFont.className} h-full bg-grau`}>
-        <header className="px-6 py-3 bg-rosa border-b border-gray-300">
+        <header className="px-4 py-3 bg-rosa border-b border-gray-300">
           <a href="/">
             <h1 className={`${headingFont.className} text-2xl text-rot`}>
               DARK CORNERS - Der Bias-Tester
