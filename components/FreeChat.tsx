@@ -36,7 +36,7 @@ const FreeChat = () => {
                       {m.role === "user" ? (
                         <UserMessage message={m.content} />
                       ) : (
-                        <OpenAIMessage message={m.content} />
+                        <OpenAIMessage>{m.content}</OpenAIMessage>
                       )}
                     </div>
                   ))
