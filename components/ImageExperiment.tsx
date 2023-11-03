@@ -58,7 +58,7 @@ const ImageExperiment = ({
 
   return (
     <div>
-      <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
+      <h3 className={`${headingFont.className} text-2xl mb-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
       {showInstructions ? (
