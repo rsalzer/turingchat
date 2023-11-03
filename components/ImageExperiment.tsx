@@ -8,6 +8,7 @@ import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
 import Instruction from "@/components/Instruction";
 import experiments from "../public/experiments.json";
+import Link from "next/link";
 
 export type ImageExperimentType = {
   id: number;
@@ -75,81 +76,72 @@ const ImageExperiment = ({
           />
           <div className="flex-1 max-w-4xl">
             <UserMessage message={chosenExperiment.prompt} />
-            {imgUrl ? (
-              <>
-                {/*<div className="w-[256px] h-[256px] bg-amber-300 flex justify-center items-center">*/}
-                {/*  <img src={imgUrl} alt={chosenExperiment.prompt} />*/}
-                {/*</div>*/}
-                <OpenAIMessage>
-                  <img src={imgUrl} alt={chosenExperiment.prompt} />
-                </OpenAIMessage>
-                {showOkNotOk && (
-                  <div className="text-xl flex flex-col m-auto bg-rosa py-4 px-4">
-                    <div className="text-l">
-                      Bei diesem Experiment müssen Sie bestimmen, ob der Bias
-                      vorhanden ist.
-                    </div>
-                    {wordFound != null ? (
-                      <>
-                        <div>
-                          Sie haben sich entschieden für:
-                          <br />
-                          <span className={"text-rot"}>{wordFound}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div>Entscheiden Sie: </div>
-                        <div className="flex gap-3">
-                          {chosenExperiment.words.map((word) => (
-                            <Button
-                              onClick={() => {
-                                setWordsToIncrement([word]);
-                                setWordFound(word);
-                              }}
-                              key={word}
-                            >
-                              {word}
-                            </Button>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-                {showRestartButton && (
-                  <div className="px-4">
-                    <Button
-                      onClick={() => {
-                        setImgUrl(undefined);
-                        setWordsToIncrement([]);
-                        setWordFound(null);
-                        createImage(chosenExperiment.prompt);
-                      }}
-                    >
-                      Erneut generieren
-                    </Button>
-                    {chosenExperiment.id + 1 < experiments.length && (
-                      <Button
-                        onClick={() => {
-                          const newLocation = chosenExperiment.id + 1;
-                          console.log(newLocation);
-                          window.location.href = "/experiment/" + newLocation;
-                        }}
-                      >
-                        Zum nächsten Experiment
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </>
-            ) : (
+            <>
               <OpenAIMessage>
                 <div className="w-[256px] h-[256px] bg-rosa flex justify-center items-center">
-                  Generiere Bild...
+                  {imgUrl ? (
+                    <img src={imgUrl} alt={chosenExperiment.prompt} />
+                  ) : (
+                    <div>Generiere Bild...</div>
+                  )}
                 </div>
               </OpenAIMessage>
-            )}
+              {imgUrl && showOkNotOk && (
+                <div className="text-xl flex flex-col m-auto bg-rosa py-4 px-4">
+                  <div className="text-l">
+                    Bei diesem Experiment müssen Sie bestimmen, ob der Bias
+                    vorhanden ist.
+                  </div>
+                  {wordFound != null ? (
+                    <>
+                      <div>
+                        Sie haben sich entschieden für:
+                        <br />
+                        <span className={"text-rot"}>{wordFound}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>Entscheiden Sie: </div>
+                      <div className="flex gap-3">
+                        {chosenExperiment.words.map((word) => (
+                          <Button
+                            onClick={() => {
+                              setWordsToIncrement([word]);
+                              setWordFound(word);
+                            }}
+                            key={word}
+                          >
+                            {word}
+                          </Button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+              {imgUrl && showRestartButton && (
+                <div className="px-4">
+                  <Button
+                    onClick={() => {
+                      setImgUrl(undefined);
+                      setWordsToIncrement([]);
+                      setWordFound(null);
+                      createImage(chosenExperiment.prompt);
+                    }}
+                  >
+                    Erneut generieren
+                  </Button>
+                  {chosenExperiment.id + 1 < experiments.length && (
+                    <Button onClick={() => {}}>
+                      <Link href={`/experiment/${chosenExperiment.id + 1}`}>
+                        Zum nächsten Experiment
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+              )}
+            </>
           </div>
         </div>
       )}

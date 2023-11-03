@@ -2,6 +2,7 @@
 
 import { boldFont, headingFont, normalFont } from "@/app/fonts";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 export default function MainPage() {
   return (
@@ -37,8 +38,8 @@ export default function MainPage() {
           ersten Experiment.
         </b>
       </p>
-      <Button onClick={() => (window.location.href = "/experiment/0")}>
-        Direkt zum ersten Experiment
+      <Button onClick={() => {}}>
+        <Link href={`/experiment/0`}>Direkt zum ersten Experiment</Link>
       </Button>
     </div>
   );

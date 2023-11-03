@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { headingFont } from "@/app/fonts";
 import Instruction from "@/components/Instruction";
 import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 export type ExperimentType = {
   id: number;
@@ -22,6 +23,7 @@ type ExperimentProps = {
 };
 
 const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
+  const router = useRouter();
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const [showInstructions, setShowInstructions] = useState(true);
 
@@ -60,8 +62,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
               userDecides={chosenExperiment.userDecides}
               goToNextExperiment={() => {
                 const newLocation = chosenExperiment.id + 1;
-                console.log(newLocation);
-                window.location.href = "/experiment/" + newLocation;
+                router.push("/experiment/" + newLocation);
               }}
             />
           </div>
