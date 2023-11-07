@@ -26,7 +26,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
         className={`text-black hover:text-rot font-medium text-sm mb-4 mt-2 ${
           pathname == "/" && "bg-rosa"
         }`}
-        href={`/`}
+        href={`/?overlay=false`}
       >
         Startseite
       </Link>

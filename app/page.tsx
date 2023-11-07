@@ -3,8 +3,15 @@
 import { boldFont, headingFont, normalFont } from "@/app/fonts";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function MainPage() {
+  const [showOverlayScreen, setShowOverlayScreen] = useState(true);
+  const searchParams = useSearchParams();
+
+  const overlaySearchParam = searchParams.get("overlay");
+
   return (
     <div className={`${normalFont.className} text-m max-w-2xl`}>
       <h2 className={`${headingFont.className} text-2xl my-1 text-rot`}>
@@ -41,6 +48,24 @@ export default function MainPage() {
       <Button onClick={() => {}}>
         <Link href={`/experiment/0`}>Direkt zum ersten Experiment</Link>
       </Button>
+
+      <div
+        id="menu"
+        className={`fixed top-0 left-0 z-90 w-full h-full flex flex-col justify-center items-center bg-rosa duration-700 gap-4 transition-opacity opacity-0 pointer-events-none ${
+          showOverlayScreen && !overlaySearchParam
+            ? "xl:opacity-100 pointer-events-auto"
+            : "xl:opacity-0 pointer-events-none"
+        }`}
+      >
+        <div
+          className={`${headingFont.className} flex flex-col text-rot text-center text-4xl font-light space-y-3`}
+        >
+          Willkommen zu DARK CORNERs - dem Bias-Tester
+        </div>
+        <Button onClick={() => setShowOverlayScreen(false)}>
+          Zum Starten, berühren Sie den Bildschirm hier
+        </Button>
+      </div>
     </div>
   );
 }
