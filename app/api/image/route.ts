@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
 
 async function getData(prompt: string) {
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-  const response = await openai.createImage({
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const response = await openai.images.generate({
+    model: "dall-e-3",
     prompt: prompt,
     n: 1,
-    size: "256x256",
+    // size: "256x256",
   });
   return response.data;
 }

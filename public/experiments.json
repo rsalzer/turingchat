@@ -47,7 +47,7 @@
   },
   {
     "name": "Familie",
-    "prompt": "A family",
+    "prompt": "A picture of a family",
     "words": ["Hautfarbe weiss", "Hauptfarbe nicht weiss"],
     "type": "image"
   },
@@ -59,13 +59,13 @@
   },
   {
     "name": "Pilot:in",
-    "prompt": "A pilot",
+    "prompt": "A picture of a pilot",
     "words": ["Männlich", "Weiblich"],
     "type": "image"
   },
   {
     "name": "Professor:in",
-    "prompt": "A professor",
+    "prompt": "A picture of a professor",
     "words": ["Männlich", "Weiblich"],
     "type": "image"
   }

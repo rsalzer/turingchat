@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { headingFont } from "@/app/fonts";
 import { UserMessage } from "@/components/UserMessage";
+import { OpenAIMessage } from "@/components/OpenAIMessage";
 
 const FreeImage = () => {
   const [imgUrl, setImgUrl] = useState<string>();
+  const [revisedPrompt, setRevisedPrompt] = useState<string>();
   const [prompt, setPrompt] = useState<string>("");
   const [imagePrompt, setImagePrompt] = useState<string>("");
 
@@ -14,12 +16,14 @@ const FreeImage = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        prompt: prompt,
+        prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT, DO NOT ADD ANYTHING - SO I CAN TEST IT: ${prompt}`,
       }),
     });
     const responseJSON = await response.json();
-    const url = responseJSON.data[0].url;
+    const revised = responseJSON[0].revised_prompt;
+    const url = responseJSON[0].url;
     setImgUrl(url);
+    setRevisedPrompt(revised);
   };
 
   return (
@@ -27,19 +31,22 @@ const FreeImage = () => {
       <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
         Freies Bild
       </h3>
-      <div>
+      <div className="relative">
         {imagePrompt && <UserMessage message={imagePrompt} />}
-        <div className="w-[256px] h-[256px] bg-rosa flex justify-center items-center">
-          {imgUrl ? (
-            imgUrl === "generating" ? (
-              <span>Generiere...</span>
+        <OpenAIMessage>
+          {revisedPrompt && <div>Revised Prompt: {revisedPrompt}</div>}
+          <div className="w-[512px] h-[512px] bg-rosa flex justify-center items-center">
+            {imgUrl ? (
+              imgUrl === "generating" ? (
+                <span>Generiere...</span>
+              ) : (
+                <img src={imgUrl} alt={prompt} />
+              )
             ) : (
-              <img src={imgUrl} alt={prompt} />
-            )
-          ) : (
-            <span>&nbsp;</span>
-          )}
-        </div>
+              <span>&nbsp;</span>
+            )}
+          </div>
+        </OpenAIMessage>
       </div>
       <div className="p-3 pr-2.5 bg-white/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
         <form
@@ -50,6 +57,7 @@ const FreeImage = () => {
             createImage(prompt);
             setImagePrompt(prompt);
             setPrompt("");
+            setRevisedPrompt(undefined);
           }}
         >
           <input

@@ -54,7 +54,7 @@ export default function Counters({
   }, [wordsToIncrement]);
 
   return (
-    <div className="text-2xl">
+    <div className="text-xl">
       {words.map((word: string) => (
         <div
           className={`flex justify-between gap-3 items-center ${

@@ -37,7 +37,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
   }, [chosenExperiment]);
 
   return (
-    <div>
+    <>
       <h3 className={`${headingFont.className} text-2xl mb-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
@@ -48,7 +48,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
         </div>
       ) : (
         <>
-          <div className="flex gap-10 md:flex-row flex-col">
+          <div className="flex gap-4 md:flex-row flex-col h-full overflow-hidden">
             <Counters
               hashName={chosenExperiment.name}
               words={chosenExperiment.words}
@@ -78,7 +78,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
           {/*)}*/}
         </>
       )}
-    </div>
+    </>
   );
 };
 

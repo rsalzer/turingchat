@@ -4,7 +4,7 @@ import { headingFont } from "@/app/fonts";
 
 const ChatPage = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col">
       <h3 className={`${headingFont.className} text-2xl my-3 text-rot`}>
         Freier Chat
       </h3>

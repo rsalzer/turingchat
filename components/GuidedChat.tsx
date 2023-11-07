@@ -80,83 +80,79 @@ const GuidedChat = ({
   }, [promptToSet]);
 
   return (
-    <div className="overflow-hidden">
-      <div className="flex flex-no-wrap flex-col h-full overflow-y-auto">
-        <div className="min-w-0 flex-1 max-w-4xl">
-          <div className="scrolling-touch scrolling-gpu h-full w-full relative overflow-auto overscroll-y-auto">
-            <div className="divide-y">
-              {messages.length > 0
-                ? messages.map((m) => (
-                    <div key={m.id} className="whitespace-pre-wrap">
-                      {m.role === "user" ? (
-                        <UserMessage message={m.content} />
-                      ) : (
-                        <OpenAIMessage>
-                          <p
-                            dangerouslySetInnerHTML={{ __html: m.content }}
-                          ></p>
-                        </OpenAIMessage>
-                      )}
-                    </div>
-                  ))
-                : null}
-            </div>
+    <div className="flex flex-no-wrap flex-col h-full overflow-y-scroll">
+      <div className="min-w-0 max-w-4xl">
+        <div className="scrolling-touch scrolling-gpu h-full w-full relative overflow-auto overscroll-y-auto">
+          <div className="divide-y">
+            {messages.length > 0
+              ? messages.map((m) => (
+                  <div key={m.id} className="whitespace-pre-wrap">
+                    {m.role === "user" ? (
+                      <UserMessage message={m.content} />
+                    ) : (
+                      <OpenAIMessage>
+                        <p dangerouslySetInnerHTML={{ __html: m.content }}></p>
+                      </OpenAIMessage>
+                    )}
+                  </div>
+                ))
+              : null}
           </div>
         </div>
-        <div className="flex-shrink-0 min-h-0 min-w-100 sticky bottom-0">
-          <div className="p-3 pr-2.5 bg-grau/70 ">
-            {showOkNotOk && (
-              <>
-                <div className="text-xl flex flex-col m-auto bg-rosa py-4 px-4">
-                  <div className="text-l">
-                    Bei diesem Experiment müssen Sie bestimmen, ob der Bias
-                    vorhanden ist.
-                  </div>
-                  {wordFound != null ? (
-                    <>
-                      <div>
-                        Sie haben sich entschieden für:
-                        <br />
-                        <span className={"text-rot"}>{wordFound}</span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>Entscheiden Sie: </div>
-                      <div className="">
-                        {wordsToCheck.map((word) => (
-                          <Button
-                            onClick={() => {
-                              wordsFound([word]);
-                              setWordFound(word);
-                            }}
-                            key={word}
-                          >
-                            {word}
-                          </Button>
-                        ))}
-                      </div>
-                    </>
-                  )}
+      </div>
+      <div className="">
+        <div className="p-3 pr-2.5 bg-grau/70 ">
+          {showOkNotOk && (
+            <>
+              <div className="text-xl flex flex-col m-auto bg-rosa py-2 px-4">
+                <div className="text-l">
+                  Bei diesem Experiment müssen Sie bestimmen, ob der Bias
+                  vorhanden ist.
                 </div>
-              </>
-            )}
-            {showRestartButton && (
-              <div className={"px-4 py-4"}>
-                <Button
-                  onClick={() => {
-                    start();
-                    wordsFound([]);
-                  }}
-                >
-                  Nochmals generieren
-                </Button>
-                <Button onClick={goToNextExperiment}>
-                  Zum nächsten Experiment
-                </Button>
+                {wordFound != null ? (
+                  <>
+                    <div>
+                      Sie haben sich entschieden für:
+                      <br />
+                      <span className={"text-rot"}>{wordFound}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>Entscheiden Sie: </div>
+                    <div className="">
+                      {wordsToCheck.map((word) => (
+                        <Button
+                          onClick={() => {
+                            wordsFound([word]);
+                            setWordFound(word);
+                          }}
+                          key={word}
+                        >
+                          {word}
+                        </Button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
+          {showRestartButton && (
+            <div className={"px-4 py-4"}>
+              <Button
+                onClick={() => {
+                  start();
+                  wordsFound([]);
+                }}
+              >
+                Nochmals generieren
+              </Button>
+              <Button onClick={goToNextExperiment}>
+                Zum nächsten Experiment
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

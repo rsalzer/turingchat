@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Counters from "@/components/Counters";
-import { headingFont } from "@/app/fonts";
+import { headingFont, normalFont } from "@/app/fonts";
 import Button from "@/components/Button";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
@@ -25,6 +25,7 @@ const ImageExperiment = ({
   initialCount: Record<string, any>;
 }) => {
   const [imgUrl, setImgUrl] = useState<string>();
+  const [revisedPrompt, setRevisedPrompt] = useState<string>();
   const [showOkNotOk, setShowOkNotOk] = useState(false);
   const [showRestartButton, setShowRestartButton] = useState(false);
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
@@ -36,16 +37,19 @@ const ImageExperiment = ({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        prompt: prompt,
+        prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`,
       }),
     });
     const responseJSON = await response.json();
-    const url = responseJSON.data[0].url;
+    const revisedPrompt = responseJSON[0].revised_prompt;
+    const url = responseJSON[0].url;
     setImgUrl(url);
+    setRevisedPrompt(revisedPrompt);
   };
 
   useEffect(() => {
     setImgUrl(undefined);
+    setRevisedPrompt(undefined);
     createImage(chosenExperiment.prompt);
   }, [chosenExperiment]);
 
@@ -57,7 +61,7 @@ const ImageExperiment = ({
   }, [imgUrl]);
 
   return (
-    <div>
+    <>
       <h3 className={`${headingFont.className} text-2xl mb-3 text-rot`}>
         Experiment: {chosenExperiment.name}
       </h3>
@@ -67,27 +71,57 @@ const ImageExperiment = ({
           <Button onClick={() => setShowInstructions(false)}>Loslegen</Button>
         </div>
       ) : (
-        <div className="flex gap-10 md:flex-row flex-col">
-          <Counters
-            hashName={chosenExperiment.name}
-            words={chosenExperiment.words}
-            wordsToIncrement={wordsToIncrement}
-            initialCount={initialCount}
-          />
-          <div className="flex-1 max-w-4xl">
+        <div className="flex gap-4 md:flex-row flex-col h-full overflow-hidden">
+          <div className="relative">
+            <Counters
+              hashName={chosenExperiment.name}
+              words={chosenExperiment.words}
+              wordsToIncrement={wordsToIncrement}
+              initialCount={initialCount}
+            />
+          </div>
+          <div className="flex-1 max-w-4xl overflow-y-scroll">
             <UserMessage message={chosenExperiment.prompt} />
             <>
               <OpenAIMessage>
-                <div className="w-[256px] h-[256px] bg-rosa flex justify-center items-center">
-                  {imgUrl ? (
-                    <img src={imgUrl} alt={chosenExperiment.prompt} />
-                  ) : (
-                    <div>Generiere Bild...</div>
-                  )}
+                <div className="flex gap-4">
+                  <div className="w-[400px] h-[400px] bg-rosa flex justify-center items-center shrink-0">
+                    {imgUrl ? (
+                      <>
+                        <img
+                          src={imgUrl}
+                          alt={chosenExperiment.prompt}
+                          className={"w-full h-full"}
+                        />
+                      </>
+                    ) : (
+                      <div>Generiere Bild...</div>
+                    )}
+                  </div>
+                  {revisedPrompt &&
+                    revisedPrompt != chosenExperiment.prompt && (
+                      <div>
+                        <div className="text-xs">
+                          <i>Revised Prompt</i>: {revisedPrompt}
+                        </div>
+                        <div
+                          className={`${normalFont.className} text-xs bg-white rounded-lg p-2 mt-4`}
+                        >
+                          Das neuste Bild-Modell von OpenAI heisst DALL·E 3 und
+                          erschien im November 2023.
+                          <br /> Um Bilder zu verbessern, erweitert es
+                          selbständig die Prompts (<i>Enhanced Prompt</i>).
+                          <br /> Wir haben es gebeten, dies hier nicht zu tun,
+                          damit der Bias stärker zum Vorschein kommt. <br />
+                          Manchmal ignoriert Dall·E aber unsere Anweisung
+                          störrisch.
+                        </div>
+                      </div>
+                    )}
                 </div>
               </OpenAIMessage>
               {imgUrl && showOkNotOk && (
-                <div className="text-xl flex flex-col m-auto bg-rosa py-4 px-4">
+                <div className="text-xl flex flex-col m-auto bg-rosa px-4 py-2">
                   <div className="text-l">
                     Bei diesem Experiment müssen Sie bestimmen, ob der Bias
                     vorhanden ist.
@@ -121,10 +155,11 @@ const ImageExperiment = ({
                 </div>
               )}
               {imgUrl && showRestartButton && (
-                <div className="px-4">
+                <div className="px-4 py-4">
                   <Button
                     onClick={() => {
                       setImgUrl(undefined);
+                      setRevisedPrompt(undefined);
                       setWordsToIncrement([]);
                       setWordFound(null);
                       createImage(chosenExperiment.prompt);
@@ -145,7 +180,7 @@ const ImageExperiment = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

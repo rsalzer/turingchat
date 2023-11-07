@@ -21,7 +21,7 @@ export default async function ExperimentPage({
   if (initialCount == null) initialCount = [] as Record<string, any>;
 
   return (
-    <div>
+    <div className="w-full h-full flex flex-col overflow-y-hidden">
       {chosenExperiment.type === "text" ? (
         <Experiment
           chosenExperiment={chosenExperiment}

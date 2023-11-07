@@ -7,7 +7,7 @@ const height = fontSize + padding;
 
 function Counter({ value }: { value: number }) {
   return (
-    <div style={{ fontSize }} className="flex overflow-hidden">
+    <div className="flex overflow-hidden">
       <Digit place={100} value={value} />
       <Digit place={10} value={value} />
       <Digit place={1} value={value} />

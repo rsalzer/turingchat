@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useChat } from "ai/react";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
+import Button from "@/components/Button";
 
 const FreeChat = () => {
   const { messages, handleInputChange, setInput, handleSubmit, input } =
@@ -22,9 +23,9 @@ const FreeChat = () => {
   }, [messages]);
 
   return (
-    <div className="overflow-hidden flex flex-col h-[calc(100%-60px)] max-w-2xl">
+    <div className="overflow-hidden flex flex-1 flex-col basis-1 max-w-2xl">
       <div
-        className="flex flex-no-wrap flex-col overflow-y-auto h-full"
+        className="flex flex-1 flex-no-wrap flex-col overflow-y-scroll"
         ref={scrollRef}
       >
         <div className="min-w-0 flex-1">
@@ -45,7 +46,7 @@ const FreeChat = () => {
           </div>
         </div>
       </div>
-      <div className="flex-shrink-0 min-h-0 min-w-100 sticky bottom-0">
+      <div className="flex-shrink-0 min-h-0 min-w-100">
         <div className="p-3 pr-2.5 bg-white/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
           <form
             className="relative flex items-center max-w-2xl mx-auto"
@@ -65,13 +66,8 @@ const FreeChat = () => {
               onChange={handleInputChange}
             ></input>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex gap-1 @sm:gap-2 items-center justify-end">
-              <button
-                type="submit"
-                className="whitespace-nowrap font-medium group inline-flex justify-center gap-2 items-center bg-zinc-900 hover:bg-zinc-800 text-zinc-100 rounded-md shadow-md text-sm hover:text-zinc-300 py-1.5 transition-colors px-3 border border-zinc-700 disabled:bg-white disabled:border-zinc-200 disabled:text-zinc-400 disabled:shadow-none disabled:hover:text-zinc-400 disabled:cursor-not-allowed select-none"
-                data-projection-id="11"
-                style={{ width: "70px" }}
-              >
-                Senden
+              <button type="submit" data-projection-id="11">
+                <Button onClick={() => {}}>Senden</Button>
               </button>
             </div>
           </form>

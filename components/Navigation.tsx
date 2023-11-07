@@ -11,11 +11,19 @@ type NavigationType = {
 
 const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
   const pathname = usePathname();
+  // const router = useRouter();
+  //
+  // useEffect(() => {
+  //   let timer1 = setTimeout(() => router.replace("/"), 3000);
+  //   return () => {
+  //     clearTimeout(timer1);
+  //   };
+  // }, [pathname]);
 
   return (
-    <div className="flex items-start flex-col m-4 gap-0.25">
+    <div className="flex items-start flex-col m-2 gap-0.25">
       <Link
-        className={`text-black hover:text-rot font-medium text-sm my-2 ${
+        className={`text-black hover:text-rot font-medium text-sm mb-4 mt-2 ${
           pathname == "/" && "bg-rosa"
         }`}
         href={`/`}
