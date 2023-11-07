@@ -84,8 +84,8 @@ const ImageExperiment = ({
             <UserMessage message={chosenExperiment.prompt} />
             <>
               <OpenAIMessage>
-                <div className="flex gap-4">
-                  <div className="w-[400px] h-[400px] bg-rosa flex justify-center items-center shrink-0">
+                <div className="flex gap-4 flex-col sm:flex-row">
+                  <div className="w-full max-w-[400px] aspect-square bg-rosa flex justify-center items-center shrink-0">
                     {imgUrl ? (
                       <>
                         <img

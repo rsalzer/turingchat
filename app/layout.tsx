@@ -33,7 +33,6 @@ export default async function RootLayout({
   return (
     <html
       className="antialiased h-full border-box m-0 p-0 box-border overflow-y-hidden"
-      style={{ fontSize: "24px" }}
       lang="de"
     >
       <head>

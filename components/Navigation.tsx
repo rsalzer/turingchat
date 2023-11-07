@@ -21,7 +21,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
   // }, [pathname]);
 
   return (
-    <div className="flex items-start flex-col m-2 gap-0.25">
+    <div className="items-start flex-col m-2 gap-0.25 hidden sm:flex">
       <Link
         className={`text-black hover:text-rot font-medium text-sm mb-4 mt-2 ${
           pathname == "/" && "bg-rosa"
