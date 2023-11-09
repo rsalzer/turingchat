@@ -10,20 +10,29 @@ const FreeImage = () => {
   const [revisedPrompt, setRevisedPrompt] = useState<string>();
   const [prompt, setPrompt] = useState<string>("");
   const [imagePrompt, setImagePrompt] = useState<string>("");
+  const [error, setError] = useState<string>();
 
-  const createImage = async (prompt: string) => {
-    const response = await fetch("/api/image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: `${prompt}`,
-      }),
-    });
-    const responseJSON = await response.json();
-    const revised = responseJSON[0].revised_prompt;
-    const url = responseJSON[0].url;
-    setImgUrl(url);
-    setRevisedPrompt(revised);
+  const createImage = async (theprompt: string) => {
+    try {
+      const response = await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `${theprompt}`,
+        }),
+      });
+      const responseJSON = await response.json();
+      const revised = responseJSON[0].revised_prompt;
+      const url = responseJSON[0].url;
+      setImgUrl(url);
+      setRevisedPrompt(revised);
+    } catch (e) {
+      if (typeof e === "string") {
+        setError(e);
+      } else if (e instanceof Error) {
+        setError(e.message); // works, `e` narrowed to Error
+      }
+    }
   };
 
   return (
@@ -38,7 +47,17 @@ const FreeImage = () => {
             <div className="w-full max-w-[400px] aspect-square bg-rosa flex justify-center items-center shrink-0">
               {imgUrl ? (
                 imgUrl === "generating" ? (
-                  <span>Generiere...</span>
+                  <div>
+                    {error ? (
+                      <>
+                        Fehler:
+                        <br />
+                        {error}
+                      </>
+                    ) : (
+                      "Generiere Bild..."
+                    )}
+                  </div>
                 ) : (
                   <img src={imgUrl} alt={prompt} />
                 )
@@ -74,6 +93,7 @@ const FreeImage = () => {
             e.preventDefault();
             setImgUrl("generating");
             createImage(prompt);
+            setError(undefined);
             setImagePrompt(prompt);
             setPrompt("");
             setRevisedPrompt(undefined);
