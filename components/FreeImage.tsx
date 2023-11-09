@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { headingFont } from "@/app/fonts";
+import { headingFont, normalFont } from "@/app/fonts";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
 
@@ -16,7 +16,7 @@ const FreeImage = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT, DO NOT ADD ANYTHING - SO I CAN TEST IT: ${prompt}`,
+        prompt: `${prompt}`,
       }),
     });
     const responseJSON = await response.json();
@@ -34,16 +34,35 @@ const FreeImage = () => {
       <div className="relative">
         {imagePrompt && <UserMessage message={imagePrompt} />}
         <OpenAIMessage>
-          {revisedPrompt && <div>Revised Prompt: {revisedPrompt}</div>}
-          <div className="w-[512px] h-[512px] bg-rosa flex justify-center items-center">
-            {imgUrl ? (
-              imgUrl === "generating" ? (
-                <span>Generiere...</span>
+          <div className="flex gap-4 flex-col sm:flex-row">
+            <div className="w-full max-w-[400px] aspect-square bg-rosa flex justify-center items-center shrink-0">
+              {imgUrl ? (
+                imgUrl === "generating" ? (
+                  <span>Generiere...</span>
+                ) : (
+                  <img src={imgUrl} alt={prompt} />
+                )
               ) : (
-                <img src={imgUrl} alt={prompt} />
-              )
-            ) : (
-              <span>&nbsp;</span>
+                <span>&nbsp;</span>
+              )}
+            </div>
+            {revisedPrompt && revisedPrompt != imagePrompt && (
+              <div>
+                <div className="text-xs">
+                  <i>Revised Prompt</i>: {revisedPrompt}
+                </div>
+                <div
+                  className={`${normalFont.className} text-xs bg-white rounded-lg p-2 mt-4`}
+                >
+                  Das neuste Bild-Modell von OpenAI heisst DALL·E 3 und erschien
+                  im November 2023.
+                  <br /> Um Bilder zu verbessern, erweitert es selbständig die
+                  Prompts (<i>Enhanced Prompt</i>).
+                  <br /> Wir haben es gebeten, dies hier nicht zu tun, damit der
+                  Bias stärker zum Vorschein kommt. <br />
+                  Manchmal ignoriert Dall·E aber unsere Anweisung störrisch.
+                </div>
+              </div>
             )}
           </div>
         </OpenAIMessage>
@@ -58,6 +77,11 @@ const FreeImage = () => {
             setImagePrompt(prompt);
             setPrompt("");
             setRevisedPrompt(undefined);
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "ArrowUp" && imagePrompt) {
+              setPrompt(imagePrompt);
+            }
           }}
         >
           <input

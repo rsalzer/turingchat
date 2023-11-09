@@ -31,25 +31,36 @@ const ImageExperiment = ({
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const [showInstructions, setShowInstructions] = useState(true);
   const [wordFound, setWordFound] = useState<null | string>(null);
+  const [error, setError] = useState<string>();
 
   const createImage = async (prompt: string) => {
-    const response = await fetch("/api/image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`,
-      }),
-    });
-    const responseJSON = await response.json();
-    const revisedPrompt = responseJSON[0].revised_prompt;
-    const url = responseJSON[0].url;
-    setImgUrl(url);
-    setRevisedPrompt(revisedPrompt);
+    try {
+      const response = await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`,
+        }),
+      });
+      const responseJSON = await response.json();
+      const revisedPrompt = responseJSON[0].revised_prompt;
+      const url = responseJSON[0].url;
+      setImgUrl(url);
+      setRevisedPrompt(revisedPrompt);
+    } catch (e) {
+      if (typeof e === "string") {
+        setError(e);
+      } else if (e instanceof Error) {
+        setError(e.message); // works, `e` narrowed to Error
+      }
+      setShowRestartButton(true);
+    }
   };
 
   useEffect(() => {
     setImgUrl(undefined);
     setRevisedPrompt(undefined);
+    setError(undefined);
     createImage(chosenExperiment.prompt);
   }, [chosenExperiment]);
 
@@ -95,7 +106,17 @@ const ImageExperiment = ({
                         />
                       </>
                     ) : (
-                      <div>Generiere Bild...</div>
+                      <div>
+                        {error ? (
+                          <>
+                            Fehler:
+                            <br />
+                            {error}
+                          </>
+                        ) : (
+                          "Generiere Bild..."
+                        )}
+                      </div>
                     )}
                   </div>
                   {revisedPrompt &&
@@ -154,7 +175,7 @@ const ImageExperiment = ({
                   )}
                 </div>
               )}
-              {imgUrl && showRestartButton && (
+              {showRestartButton && (
                 <div className="px-4 py-4">
                   <Button
                     onClick={() => {
@@ -162,6 +183,7 @@ const ImageExperiment = ({
                       setRevisedPrompt(undefined);
                       setWordsToIncrement([]);
                       setWordFound(null);
+                      setError(undefined);
                       createImage(chosenExperiment.prompt);
                     }}
                   >
