@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import Link from "next/link";
 import { useState } from "react";
 import { useIdleTimer } from "react-idle-timer";
+import { useSearchParams } from "next/navigation";
 
 export default function MainPage() {
   const [showOverlayScreen, setShowOverlayScreen] = useState(true);
