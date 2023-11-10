@@ -23,16 +23,15 @@ export default function MainPage() {
   return (
     <div className={`${normalFont.className} text-m max-w-2xl`}>
       <h2 className={`${headingFont.className} text-2xl my-1 text-rot`}>
-        Willkommen zum Bias-Tester.
+        Willkommen zum Vorurteile-Tester.
       </h2>
       <h3 className={`${headingFont.className} text-2xl my-1`}>KI hat Bias</h3>
       <p>
         In den aktuellen KI-Modellen stecken nicht nur riesige Mengen an Daten,
         in ihnen stecken auch unsere eigenen Vorurteile und unsere
-        diskriminierenden Strukturen. Das nennt man «Bias». Man könnte auch
-        sagen: die KI hat die Machtverhältnisse der – westlichen – Gesellschaft
-        souverän übernommen, sie hat sie gelernt. Und reproduziert sie nun
-        dementsprechend.
+        diskriminierenden Strukturen. Man könnte auch sagen: die KI hat die
+        Machtverhältnisse der – westlichen – Gesellschaft souverän übernommen,
+        sie hat sie gelernt. Und reproduziert sie nun dementsprechend.
       </p>
       <h3 className={`${headingFont.className} text-2xl my-1`}>
         Hier können Sie den Bias testen
@@ -68,7 +67,7 @@ export default function MainPage() {
         <div
           className={`${headingFont.className} flex flex-col text-rot text-center text-4xl font-light space-y-3`}
         >
-          Willkommen zu DARK CORNERs - dem Bias-Tester
+          KÜNSTLICHE INTELLIGENZ UND IHRE VORURTEILE
         </div>
         <Button onClick={() => setShowOverlayScreen(false)}>
           Zum Starten, berühren Sie den Bildschirm hier

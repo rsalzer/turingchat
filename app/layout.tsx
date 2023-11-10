@@ -38,7 +38,7 @@ export default async function RootLayout({
           // href="https://www.turingagency.org/media/site/dbd2066069-1677497962/favicon-16x16.png"
           sizes="16x16"
         />
-        <title>Dark Corners - Der Bias-Tester</title>
+        <title>Künstliche Intelligenz und ihre Vorurteile</title>
         {/*<link*/}
         {/*  rel="icon"*/}
         {/*  type="image/png"*/}
@@ -68,7 +68,7 @@ export default async function RootLayout({
         <header className="px-2 py-4 bg-rosa border-b border-gray-300">
           <a href="/">
             <h1 className={`${headingFont.className} text-2xl text-rot`}>
-              DARK CORNERS - Der Bias-Tester
+              KÜNSTLICHE INTELLIGENZ UND IHRE VORURTEILE
             </h1>
           </a>
         </header>
