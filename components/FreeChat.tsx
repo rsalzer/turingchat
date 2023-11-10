@@ -4,9 +4,19 @@ import { useEffect, useRef } from "react";
 import { useChat } from "ai/react";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
-import Button from "@/components/Button";
+import { boldFont } from "@/app/fonts";
+import { useRouter } from "next/navigation";
+import { useIdleTimer } from "react-idle-timer";
 
 const FreeChat = () => {
+  const router = useRouter();
+  useIdleTimer({
+    onIdle: () => {
+      router.replace("/");
+    },
+    timeout: 60_000,
+  });
+
   const { messages, handleInputChange, setInput, handleSubmit, input } =
     useChat({
       headers: {
@@ -66,8 +76,12 @@ const FreeChat = () => {
               onChange={handleInputChange}
             ></input>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex gap-1 @sm:gap-2 items-center justify-end">
-              <button type="submit" data-projection-id="11">
-                <Button onClick={() => {}}>Senden</Button>
+              <button
+                type="submit"
+                data-projection-id="11"
+                className={`${boldFont.className} m-2 ml-0 whitespace-nowrap text-sm group inline-flex justify-center gap-2 items-center bg-black text-white rounded-md shadow-md hover:bg-rot py-1.5 transition-colors px-3 disabled:bg-white disabled:border-zinc-200 select-none active:bg-rosa active:text-black`}
+              >
+                Senden
               </button>
             </div>
           </form>

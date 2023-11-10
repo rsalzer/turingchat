@@ -4,13 +4,20 @@ import { boldFont, headingFont, normalFont } from "@/app/fonts";
 import Button from "@/components/Button";
 import Link from "next/link";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useIdleTimer } from "react-idle-timer";
 
 export default function MainPage() {
   const [showOverlayScreen, setShowOverlayScreen] = useState(true);
   const searchParams = useSearchParams();
 
   const overlaySearchParam = searchParams.get("overlay");
+
+  useIdleTimer({
+    onIdle: () => {
+      setShowOverlayScreen(true);
+    },
+    timeout: 90_000,
+  });
 
   return (
     <div className={`${normalFont.className} text-m max-w-2xl`}>

@@ -15,11 +15,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const experiments: [ExperimentType[]] = await redis.json.get(
-  //   "experiments",
-  //   "$"
-  // );
-  // const experimentsToUse = experiments[0];
   const experimentsToUse = experiments as ExperimentType[];
   experimentsToUse.forEach((experiment, index) => (experiment.id = index));
 

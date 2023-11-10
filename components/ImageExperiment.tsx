@@ -9,6 +9,8 @@ import { OpenAIMessage } from "@/components/OpenAIMessage";
 import Instruction from "@/components/Instruction";
 import experiments from "../public/experiments.json";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useIdleTimer } from "react-idle-timer";
 
 export type ImageExperimentType = {
   id: number;
@@ -24,6 +26,14 @@ const ImageExperiment = ({
   chosenExperiment: ImageExperimentType;
   initialCount: Record<string, any>;
 }) => {
+  const router = useRouter();
+  useIdleTimer({
+    onIdle: () => {
+      router.replace("/");
+    },
+    timeout: 120_000,
+  });
+
   const [imgUrl, setImgUrl] = useState<string>();
   const [revisedPrompt, setRevisedPrompt] = useState<string>();
   const [showOkNotOk, setShowOkNotOk] = useState(false);

@@ -12,6 +12,7 @@ type NavigationType = {
 const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
   const pathname = usePathname();
   // const router = useRouter();
+  // router.replace("/")
   //
   // useEffect(() => {
   //   let timer1 = setTimeout(() => router.replace("/"), 3000);

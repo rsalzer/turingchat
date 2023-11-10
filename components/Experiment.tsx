@@ -7,6 +7,7 @@ import { headingFont } from "@/app/fonts";
 import Instruction from "@/components/Instruction";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
+import { useIdleTimer } from "react-idle-timer";
 
 export type ExperimentType = {
   id: number;
@@ -24,6 +25,14 @@ type ExperimentProps = {
 
 const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
   const router = useRouter();
+  useIdleTimer({
+    onIdle: () => {
+      console.log("IDLE");
+      router.replace("/");
+    },
+    timeout: 120_000,
+  });
+
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const [showInstructions, setShowInstructions] = useState(true);
 

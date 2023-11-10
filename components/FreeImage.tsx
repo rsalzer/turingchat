@@ -4,8 +4,18 @@ import React, { useState } from "react";
 import { headingFont, normalFont } from "@/app/fonts";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
+import { useIdleTimer } from "react-idle-timer";
+import { useRouter } from "next/navigation";
 
 const FreeImage = () => {
+  const router = useRouter();
+  useIdleTimer({
+    onIdle: () => {
+      router.replace("/");
+    },
+    timeout: 60_000,
+  });
+
   const [imgUrl, setImgUrl] = useState<string>();
   const [revisedPrompt, setRevisedPrompt] = useState<string>();
   const [prompt, setPrompt] = useState<string>("");
