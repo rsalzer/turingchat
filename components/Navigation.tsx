@@ -11,15 +11,6 @@ type NavigationType = {
 
 const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
   const pathname = usePathname();
-  // const router = useRouter();
-  // router.replace("/")
-  //
-  // useEffect(() => {
-  //   let timer1 = setTimeout(() => router.replace("/"), 3000);
-  //   return () => {
-  //     clearTimeout(timer1);
-  //   };
-  // }, [pathname]);
 
   return (
     <div className="items-start flex-col m-2 gap-0.25 hidden sm:flex">
@@ -85,6 +76,14 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
       {/*>*/}
       {/*  <i>Freies Bild</i>*/}
       {/*</Link>*/}
+      <Link
+        className={`text-black hover:text-rot font-medium text-sm mt-4 ${
+          pathname == `/impressum` && "bg-rosa"
+        }`}
+        href={`/impressum`}
+      >
+        Impressum
+      </Link>
     </div>
   );
 };
