@@ -24,12 +24,20 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
   return (
     <div className="items-start flex-col m-2 gap-0.25 hidden sm:flex">
       <Link
-        className={`text-black hover:text-rot font-medium text-sm mb-4 mt-2 ${
+        className={`text-black hover:text-rot font-medium text-sm mt-2 ${
           pathname == "/" && "bg-rosa"
         }`}
         href={`/?overlay=false`}
       >
         Startseite
+      </Link>
+      <Link
+        className={`text-black hover:text-rot font-medium text-sm mb-2 mt-2 ${
+          pathname == "/infos" && "bg-rosa"
+        }`}
+        href={`/infos`}
+      >
+        Mehr Informationen
       </Link>
       <div className={"text-rot"}>Text-Experimente</div>
       {textExperiments.map((experiment: ExperimentType, i: number) => (
@@ -69,14 +77,14 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
           . {experiment.name}
         </Link>
       ))}
-      <Link
-        className={`text-black hover:text-rot font-medium text-sm mt-4 ${
-          pathname == `/image` && "bg-rosa"
-        }`}
-        href={`/image`}
-      >
-        <i>Freies Bild</i>
-      </Link>
+      {/*<Link*/}
+      {/*  className={`text-black hover:text-rot font-medium text-sm mt-4 ${*/}
+      {/*    pathname == `/image` && "bg-rosa"*/}
+      {/*  }`}*/}
+      {/*  href={`/image`}*/}
+      {/*>*/}
+      {/*  <i>Freies Bild</i>*/}
+      {/*</Link>*/}
     </div>
   );
 };

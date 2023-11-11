@@ -22,23 +22,26 @@ export default function MainPage() {
 
   return (
     <div className={`${normalFont.className} text-m max-w-2xl`}>
-      <h2 className={`${headingFont.className} text-2xl my-1 text-rot`}>
+      <h2 className={`${headingFont.className} text-2xl mb-3 text-rot`}>
         Willkommen zum Vorurteile-Tester.
       </h2>
-      <h3 className={`${headingFont.className} text-2xl my-1`}>KI hat Bias</h3>
-      <p>
-        In den aktuellen KI-Modellen stecken nicht nur riesige Mengen an Daten,
-        in ihnen stecken auch unsere eigenen Vorurteile und unsere
-        diskriminierenden Strukturen. Man könnte auch sagen: die KI hat die
-        Machtverhältnisse der – westlichen – Gesellschaft souverän übernommen,
-        sie hat sie gelernt. Und reproduziert sie nun dementsprechend.
-      </p>
-      <h3 className={`${headingFont.className} text-2xl my-1`}>
-        Hier können Sie den Bias testen
+      <h3 className={`${headingFont.className} text-2xl my-2`}>
+        KI hat Vorurteile
       </h3>
-      <p>
+      <p className="mb-4">
+        In den aktuellen KI-Modellen (beispielsweise ChatGPT oder DALL·E)
+        stecken nicht nur riesige Mengen an Daten, in ihnen stecken auch unsere
+        eigenen Vorurteile und unsere diskriminierenden Strukturen. Man könnte
+        auch sagen: die KI hat die Machtverhältnisse der – westlichen –
+        Gesellschaft souverän übernommen, sie hat sie gelernt. Und reproduziert
+        sie nun dementsprechend.
+      </p>
+      <h3 className={`${headingFont.className} text-2xl my-2`}>
+        Hier können Sie Vorurteile testen
+      </h3>
+      <p className="mb-4">
         Wir haben eine Teststation gebaut, mit der Sie die diskriminierenden
-        Abgründe, die «Dark Corners» von GPT und Konsorten erkunden können. Um
+        Abgründe, die «dunklen Ecken» von GPT und Konsorten erkunden können. Um
         den Einstieg ins Testen zu erleichtern, schlagen wir ein paar
         entlarvende Prompts vor, die Sie einfach anklicken können. Probieren Sie
         selber aus, ob Sie damit sexistische oder rassistische Texte und Bilder
@@ -48,12 +51,17 @@ export default function MainPage() {
       </p>
       <p className={"my-1"}>
         <b className={`${boldFont.className}`}>
-          Wählen Sie links ein Experiment aus oder springen Sie direkt zum
-          ersten Experiment.
+          Wählen Sie links ein Experiment aus, springen Sie direkt zum ersten
+          Experiment oder lesen sie mehr über KI und ihre Vorurteile.
         </b>
       </p>
       <Button onClick={() => {}}>
         <Link href={`/experiment/0`}>Direkt zum ersten Experiment</Link>
+      </Button>
+      <Button onClick={() => {}}>
+        <Link href={`/infos`}>
+          Mehr Informationen über KI und ihre Vorurteile
+        </Link>
       </Button>
 
       <div

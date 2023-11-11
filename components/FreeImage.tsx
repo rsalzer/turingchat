@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { headingFont, normalFont } from "@/app/fonts";
+import { boldFont, headingFont, normalFont } from "@/app/fonts";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
 import { useIdleTimer } from "react-idle-timer";
@@ -125,9 +125,8 @@ const FreeImage = () => {
           <div className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex gap-1 @sm:gap-2 items-center justify-end">
             <button
               type="submit"
-              className="whitespace-nowrap font-medium group inline-flex justify-center gap-2 items-center bg-zinc-900 hover:bg-zinc-800 text-zinc-100 rounded-md shadow-md text-sm hover:text-zinc-300 py-1.5 transition-colors px-3 border border-zinc-700 disabled:bg-white disabled:border-zinc-200 disabled:text-zinc-400 disabled:shadow-none disabled:hover:text-zinc-400 disabled:cursor-not-allowed select-none"
               data-projection-id="11"
-              style={{ width: "70px" }}
+              className={`${boldFont.className} m-2 ml-0 whitespace-nowrap text-sm group inline-flex justify-center gap-2 items-center bg-black text-white rounded-md shadow-md hover:bg-rot py-1.5 transition-colors px-3 disabled:bg-white disabled:border-zinc-200 select-none active:bg-rosa active:text-black`}
             >
               Senden
             </button>

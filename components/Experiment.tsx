@@ -51,7 +51,7 @@ const Experiment = ({ chosenExperiment, initialCount }: ExperimentProps) => {
         Experiment: {chosenExperiment.name}
       </h3>
       {showInstructions ? (
-        <div className={"max-w-2xl"}>
+        <div className={"max-w-2xl overflow-y-auto"}>
           <Instruction instruction={chosenExperiment.name} />
           <Button onClick={() => setShowInstructions(false)}>Loslegen</Button>
         </div>

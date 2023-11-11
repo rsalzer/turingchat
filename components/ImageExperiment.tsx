@@ -87,7 +87,7 @@ const ImageExperiment = ({
         Experiment: {chosenExperiment.name}
       </h3>
       {showInstructions ? (
-        <div className={"max-w-2xl"}>
+        <div className={"max-w-2xl overflow-y-auto"}>
           <Instruction instruction={chosenExperiment.name} />
           <Button onClick={() => setShowInstructions(false)}>Loslegen</Button>
         </div>
@@ -140,8 +140,8 @@ const ImageExperiment = ({
                         >
                           Das neuste Bild-Modell von OpenAI heisst DALL·E 3 und
                           erschien im November 2023.
-                          <br /> Um Bilder zu verbessern, erweitert es
-                          selbständig die Prompts (<i>Enhanced Prompt</i>).
+                          <br /> Um Bilder zu verbessern, erweitert es die
+                          Prompts selbständig (<i>Enhanced Prompt</i>).
                           <br /> Wir haben es gebeten, dies hier nicht zu tun,
                           damit der Bias stärker zum Vorschein kommt. <br />
                           Manchmal ignoriert Dall·E aber unsere Anweisung
