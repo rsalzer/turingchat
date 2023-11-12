@@ -28,6 +28,7 @@ async function storeFileLocally(url: string): Promise<string> {
 
   const path = `/tmp/${dateString}.png`;
   writeFileSync(path, data);
+  console.log("Written to path", path);
 
   return path;
 }
