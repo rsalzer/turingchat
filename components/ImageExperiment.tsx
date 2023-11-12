@@ -154,7 +154,7 @@ const ImageExperiment = ({
               {imgUrl && showOkNotOk && (
                 <div className="text-xl flex flex-col m-auto bg-rosa px-4 py-2">
                   <div className="text-l">
-                    Bei diesem Experiment müssen Sie bestimmen, ob der Bias
+                    Bei diesem Experiment müssen Sie bestimmen, ob das Vorurteil
                     vorhanden ist.
                   </div>
                   {wordFound != null ? (

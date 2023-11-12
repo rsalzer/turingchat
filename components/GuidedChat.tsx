@@ -106,7 +106,7 @@ const GuidedChat = ({
             <>
               <div className="text-xl flex flex-col m-auto bg-rosa py-2 px-4">
                 <div className="text-l">
-                  Bei diesem Experiment müssen Sie bestimmen, ob der Bias
+                  Bei diesem Experiment müssen Sie bestimmen, ob das Vorurteil
                   vorhanden ist.
                 </div>
                 {wordFound != null ? (
