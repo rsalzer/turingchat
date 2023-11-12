@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 import * as ftp from "basic-ftp";
 import { writeFileSync } from "fs";
 
-export const maxDuration = 20;
+export const runtime = "edge";
 
 async function getData(prompt: string, id: number) {
   console.log("Start getting prompt", prompt);
