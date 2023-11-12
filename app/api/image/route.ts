@@ -53,7 +53,7 @@ async function testUpload(url: string, id: number) {
 export async function POST(req: Request) {
   const data = await req.json();
   const prompt: string = data.prompt;
-  const id: Number = data.id;
+  const id: number = data.id;
   const imageData = await getData(prompt, id);
   return NextResponse.json(imageData);
 }
