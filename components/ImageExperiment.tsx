@@ -50,6 +50,7 @@ const ImageExperiment = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`,
+          id: chosenExperiment.id,
         }),
       });
       const responseJSON = await response.json();
