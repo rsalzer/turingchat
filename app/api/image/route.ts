@@ -4,6 +4,7 @@ import * as ftp from "basic-ftp";
 import { writeFileSync } from "fs";
 
 async function getData(prompt: string, id: number) {
+  console.log("Start getting prompt", prompt);
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const response = await openai.images.generate({
     model: "dall-e-3",
@@ -11,12 +12,14 @@ async function getData(prompt: string, id: number) {
     n: 1,
     size: "1024x1024",
   });
+  console.log("Image arrived");
   const url = response.data[0].url;
   if (url) await testUpload(url, id);
   return response.data;
 }
 
 async function storeFileLocally(url: string): Promise<string> {
+  console.log("Start downloading file", url);
   const response = await fetch(url);
   const buffer = await response.arrayBuffer();
   const data = Buffer.from(buffer);
@@ -37,6 +40,7 @@ async function testUpload(url: string, id: number) {
   const path = await storeFileLocally(url);
   const client = new ftp.Client();
   client.ftp.verbose = false;
+  console.log("Start uploading file");
   try {
     await client.access({
       host: process.env.FTP_HOST,
@@ -49,6 +53,7 @@ async function testUpload(url: string, id: number) {
     console.log(err);
   }
   client.close();
+  console.log("File uploading completed");
 }
 
 export async function POST(req: Request) {
