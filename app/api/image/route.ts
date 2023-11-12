@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import * as ftp from "basic-ftp";
-import { Readable } from "stream";
-import { extname } from "path";
 import { writeFileSync } from "fs";
 
 async function getData(prompt: string, id: number) {
@@ -18,7 +16,7 @@ async function getData(prompt: string, id: number) {
   return response.data;
 }
 
-export async function storeFileLocally(url: string): Promise<string> {
+async function storeFileLocally(url: string): Promise<string> {
   const response = await fetch(url);
   const buffer = await response.arrayBuffer();
   const data = Buffer.from(buffer);
@@ -32,10 +30,6 @@ export async function storeFileLocally(url: string): Promise<string> {
   writeFileSync(path, data);
 
   return path;
-}
-
-function getFileExtension(url: string): string {
-  return extname(url).slice(1);
 }
 
 async function testUpload(url: string, id: number) {
