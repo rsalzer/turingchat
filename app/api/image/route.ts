@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import * as ftp from "basic-ftp";
-import axios from "axios";
+import get from "axios";
 import { Readable } from "stream";
 
 async function getData(prompt: string, id: number) {
@@ -20,7 +20,7 @@ async function getData(prompt: string, id: number) {
 }
 
 async function testUpload(url: string, id: number) {
-  const { data } = await axios.get<Readable>(url, {
+  const { data } = await get<Readable>(url, {
     responseType: "stream",
   });
   const client = new ftp.Client();
