@@ -3,6 +3,8 @@ import { OpenAI } from "openai";
 import * as ftp from "basic-ftp";
 import { writeFileSync } from "fs";
 
+export const maxDuration = 20;
+
 async function getData(prompt: string, id: number) {
   console.log("Start getting prompt", prompt);
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
