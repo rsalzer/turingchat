@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import * as ftp from "basic-ftp";
-import { writeFileSync } from "fs";
-
-export const runtime = "edge";
+import axios from "axios";
+import { Readable } from "stream";
 
 async function getData(prompt: string, id: number) {
   console.log("Start getting prompt", prompt);
@@ -20,37 +19,25 @@ async function getData(prompt: string, id: number) {
   return response.data;
 }
 
-async function storeFileLocally(url: string): Promise<string> {
-  console.log("Start downloading file", url);
-  const response = await fetch(url);
-  const buffer = await response.arrayBuffer();
-  const data = Buffer.from(buffer);
-
-  const dateString = new Date()
-    .toISOString()
-    .replace(/T/, "_") // replace T with a space
-    .replace(/\..+/, "");
-
-  const path = `/tmp/${dateString}.png`;
-  writeFileSync(path, data);
-  console.log("Written to path", path);
-
-  return path;
-}
-
 async function testUpload(url: string, id: number) {
-  const path = await storeFileLocally(url);
+  const { data } = await axios.get<Readable>(url, {
+    responseType: "stream",
+  });
   const client = new ftp.Client();
   client.ftp.verbose = false;
   console.log("Start uploading file");
   try {
+    const dateString = new Date()
+      .toISOString()
+      .replace(/T/, "_") // replace T with a space
+      .replace(/\..+/, "");
     await client.access({
       host: process.env.FTP_HOST,
       user: process.env.FTP_USER,
       password: process.env.FTP_PW,
       secure: false,
     });
-    await client.uploadFrom(path, `${id}/${path.replace("/tmp/", "")}`);
+    await client.uploadFrom(data, `${id}/${dateString}.png`);
   } catch (err) {
     console.log(err);
   }
