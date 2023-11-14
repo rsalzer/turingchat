@@ -58,6 +58,9 @@ const ImageExperiment = ({
       const url = responseJSON[0].url;
       setImgUrl(url);
       setRevisedPrompt(revisedPrompt);
+      uploadImage(url, chosenExperiment.id).then(() =>
+        console.log("Upload completed")
+      );
     } catch (e) {
       if (typeof e === "string") {
         setError(e);
@@ -65,6 +68,21 @@ const ImageExperiment = ({
         setError(e.message); // works, `e` narrowed to Error
       }
       setShowRestartButton(true);
+    }
+  };
+
+  const uploadImage = async (url: string, id: number) => {
+    try {
+      await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: url,
+          id: id,
+        }),
+      });
+    } catch (e) {
+      console.log("Upload failed");
     }
   };
 

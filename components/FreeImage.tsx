@@ -37,12 +37,28 @@ const FreeImage = () => {
       const url = responseJSON[0].url;
       setImgUrl(url);
       setRevisedPrompt(revised);
+      uploadImage(url, 0).then(() => console.log("Upload completed"));
     } catch (e) {
       if (typeof e === "string") {
         setError(e);
       } else if (e instanceof Error) {
         setError(e.message); // works, `e` narrowed to Error
       }
+    }
+  };
+
+  const uploadImage = async (url: string, id: number) => {
+    try {
+      await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: url,
+          id: id,
+        }),
+      });
+    } catch (e) {
+      console.log("Upload failed");
     }
   };
 
