@@ -4,8 +4,6 @@ import * as ftp from "basic-ftp";
 import get from "axios";
 import { Readable } from "stream";
 
-export const runtime = "edge";
-
 async function getData(prompt: string, id: number) {
   console.log("Start getting prompt", prompt);
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -17,7 +15,7 @@ async function getData(prompt: string, id: number) {
   });
   console.log("Image arrived");
   const url = response.data[0].url;
-  if (url) await testUpload(url, id);
+  if (url && id !== 0) await testUpload(url, id);
   return response.data;
 }
 
@@ -52,5 +50,6 @@ export async function POST(req: Request) {
   const prompt: string = data.prompt;
   const id: number = data.id;
   const imageData = await getData(prompt, id);
+  console.log("Sending image to client");
   return NextResponse.json(imageData);
 }
