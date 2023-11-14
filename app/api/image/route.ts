@@ -13,7 +13,7 @@ async function getData(prompt: string, id: number) {
     n: 1,
     size: "1024x1024",
   });
-  console.log("Image arrived");
+  console.log("Image arrived from Openai");
   const url = response.data[0].url;
   if (url && id !== 0) await testUpload(url, id);
   return response.data;
