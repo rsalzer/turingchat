@@ -8,13 +8,13 @@ import { useIdleTimer } from "react-idle-timer";
 import { useRouter } from "next/navigation";
 
 const FreeImage = () => {
-  const router = useRouter();
-  useIdleTimer({
-    onIdle: () => {
-      router.replace("/");
-    },
-    timeout: 60_000,
-  });
+  // const router = useRouter();
+  // useIdleTimer({
+  //   onIdle: () => {
+  //     router.replace("/");
+  //   },
+  //   timeout: 60_000,
+  // });
 
   const [imgUrl, setImgUrl] = useState<string>();
   const [revisedPrompt, setRevisedPrompt] = useState<string>();
@@ -28,7 +28,8 @@ const FreeImage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `${theprompt}`,
+          prompt: theprompt,
+          id: 0,
         }),
       });
       const responseJSON = await response.json();
