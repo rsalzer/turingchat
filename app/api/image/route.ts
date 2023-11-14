@@ -15,7 +15,9 @@ async function getData(prompt: string, id: number) {
   });
   console.log("Image arrived from Openai");
   const url = response.data[0].url;
-  if (url && id !== 0) await testUpload(url, id);
+  if (url && id !== 0)
+    testUpload(url, id).then(() => console.log("Upload finished"));
+  console.log("Not waiting to return ...");
   return response.data;
 }
 
