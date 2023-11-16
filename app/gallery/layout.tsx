@@ -1,7 +1,7 @@
 import { headingFont, normalFont } from "@/app/fonts";
-import Link from "next/link";
 import experiments from "@/public/experiments.json";
 import { ExperimentType } from "@/components/Experiment";
+import GalleryNavigation from "@/components/GalleryNavigation";
 
 export default async function RootLayout({
   children,
@@ -17,15 +17,11 @@ export default async function RootLayout({
 
   return (
     <div className={`${normalFont.className} text-m flex flex-col h-full`}>
-      <div className={"flex items-center mb-3 gap-3"}>
-        <h2 className={`${headingFont.className} text-2xl text-rot`}>
+      <div>
+        <h2 className={`${headingFont.className} text-2xl text-rot mb-1`}>
           Foto-Gallerie
         </h2>
-        {imageExperiments.map((experiment) => (
-          <Link href={"" + experiment.id} key={experiment.name}>
-            {experiment.name}
-          </Link>
-        ))}
+        <GalleryNavigation imageExperiments={imageExperiments} />
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-2 overflow-y-scroll flex-1">
         {children}

@@ -5,6 +5,9 @@
 @layer base {
 	html {
 		font-size: 24px;
+		@media (max-width: 639px) {
+			font-size:14px
+		}
 		@screen sm {
 			font-size: 14px;
 		}

@@ -27,6 +27,12 @@ export default function MainPage() {
         <span>Robert Salzer</span>
         <b className={`${boldFont.className} `}>Ausstellungdesign:</b>
         <span>Bellprat Partner</span>
+        <b />
+        <span />
+        <b />
+        <span />
+        <b className={`${boldFont.className} `}>Benutzte Modelle:</b>
+        <span>ChatGPT (Texte), DALL·E 3 (Bilder) by OpenAI</span>
       </div>
     </div>
   );

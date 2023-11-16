@@ -68,8 +68,8 @@ export default function MainPage() {
         id="menu"
         className={`fixed top-0 left-0 z-90 w-full h-full flex flex-col justify-center items-center bg-rosa duration-700 gap-4 transition-opacity opacity-0 pointer-events-none ${
           showOverlayScreen && !overlaySearchParam
-            ? "xl:opacity-100 pointer-events-auto"
-            : "xl:opacity-0 pointer-events-none"
+            ? "xl:opacity-100 xl:pointer-events-auto"
+            : "xl:opacity-0 xl:pointer-events-none"
         }`}
       >
         <div

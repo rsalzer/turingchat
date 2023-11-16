@@ -84,6 +84,14 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
       >
         Impressum
       </Link>
+      <Link
+        className={`text-black hover:text-rot font-medium text-sm mt-4 ${
+          pathname.startsWith(`/gallery`) && "bg-rosa"
+        }`}
+        href={`/gallery`}
+      >
+        Gallerie
+      </Link>
     </div>
   );
 };
