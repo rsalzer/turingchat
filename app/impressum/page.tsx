@@ -21,8 +21,6 @@ export default function MainPage() {
       <div className="grid grid-cols-2 max-w-lg gap-2">
         <b className={`${boldFont.className} `}>Idee und Umsetzung:</b>{" "}
         <span>TuringAgency (www.turingagency.org)</span>
-        <b className={`${boldFont.className} `}>Konzeption:</b>
-        <span>Roland Fischer, Robert Salzer</span>
         <b className={`${boldFont.className} `}>Texte:</b>
         <span>Roland Fischer</span>
         <b className={`${boldFont.className} `}>Programmierung:</b>
