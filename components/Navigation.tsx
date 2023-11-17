@@ -34,6 +34,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             pathname == "/" && "bg-rosa"
           }`}
           href={`/?overlay=false`}
+          onClick={() => setIsOpen(false)}
         >
           Startseite
         </Link>
@@ -42,6 +43,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             pathname == "/infos" && "bg-rosa"
           }`}
           href={`/infos`}
+          onClick={() => setIsOpen(false)}
         >
           Mehr Informationen
         </Link>
@@ -53,6 +55,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             }`}
             key={i}
             href={`/experiment/${i}`}
+            onClick={() => setIsOpen(false)}
           >
             {experiment.id + 1 < 10
               ? "0" + String(experiment.id + 1)
@@ -77,6 +80,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             }`}
             key={i}
             href={`/experiment/${experiment.id}`}
+            onClick={() => setIsOpen(false)}
           >
             {experiment.id + 1 < 10
               ? "0" + String(experiment.id + 1)
@@ -97,6 +101,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             pathname == `/impressum` && "bg-rosa"
           }`}
           href={`/impressum`}
+          onClick={() => setIsOpen(false)}
         >
           Impressum
         </Link>
@@ -105,6 +110,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
             pathname.startsWith(`/gallery`) && "bg-rosa"
           }`}
           href={`/gallery`}
+          onClick={() => setIsOpen(false)}
         >
           Gallerie
         </Link>
