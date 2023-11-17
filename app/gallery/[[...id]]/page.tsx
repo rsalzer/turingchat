@@ -5,7 +5,9 @@ export default async function GalleryPage({
 }) {
   let { id } = params;
   if (!id) id = "6";
-  const req = await fetch(`https://salzer.it/bias/${id}/json.php`);
+  const req = await fetch(`https://salzer.it/bias/${id}/json.php`, {
+    cache: "no-store",
+  });
   const data = await req.json();
 
   return (
