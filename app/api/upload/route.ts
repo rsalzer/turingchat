@@ -2,14 +2,17 @@ import { NextResponse } from "next/server";
 import * as ftp from "basic-ftp";
 import get from "axios";
 import { Readable } from "stream";
+import sharp from "sharp";
 
 async function testUpload(url: string, id: number) {
-  const { data } = await get<Readable>(url, {
-    responseType: "stream",
+  const { data } = await get<ArrayBuffer>(url, {
+    responseType: "arraybuffer",
   });
   const client = new ftp.Client();
   client.ftp.verbose = false;
-  console.log("Start uploading file", id, url);
+  console.log("Converting to webp", id, url);
+  const webpData = await sharp(data).webp().toBuffer();
+  console.log("Uploading", id);
   try {
     const dateString = new Date()
       .toISOString()
@@ -21,7 +24,8 @@ async function testUpload(url: string, id: number) {
       password: process.env.FTP_PW,
       secure: false,
     });
-    await client.uploadFrom(data, `${id}/${dateString}.png`);
+    const stream = Readable.from(webpData);
+    await client.uploadFrom(stream, `${id}/${dateString}.webp`);
   } catch (err) {
     console.log(err);
   }

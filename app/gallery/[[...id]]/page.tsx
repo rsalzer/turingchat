@@ -5,14 +5,14 @@ export default async function GalleryPage({
 }) {
   let { id } = params;
   if (!id) id = "6";
-  const req = await fetch(`https://salzer.it/bias/${id}/json.php`, {
+  const req = await fetch(`https://salzer.it/bias/json.php`, {
     cache: "no-store",
   });
   const data = await req.json();
 
   return (
     <>
-      {data.imgs.map((item: string) => (
+      {data[id].map((item: string) => (
         <div key={item}>
           <div className="min-w-[300px] max-w-full bg-rosa aspect-square">
             <img
