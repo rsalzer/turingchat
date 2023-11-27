@@ -19,7 +19,7 @@ export default async function RootLayout({
     <div className={`${normalFont.className} text-m flex flex-col h-full`}>
       <div>
         <h2 className={`${headingFont.className} text-2xl text-rot mb-1`}>
-          Foto-Gallerie
+          Foto-Galerie
         </h2>
         <GalleryNavigation imageExperiments={imageExperiments} />
       </div>

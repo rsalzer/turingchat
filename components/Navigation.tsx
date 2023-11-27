@@ -112,7 +112,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
           href={`/gallery`}
           onClick={() => setIsOpen(false)}
         >
-          Gallerie
+          Galerie
         </Link>
       </div>
     </>
