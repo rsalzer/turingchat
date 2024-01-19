@@ -23,9 +23,7 @@ export default async function RootLayout({
         </h2>
         <GalleryNavigation imageExperiments={imageExperiments} />
       </div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-2 overflow-y-scroll flex-1">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
