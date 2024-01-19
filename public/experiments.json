@@ -53,7 +53,7 @@
   },
   {
     "name": "Flight attendant",
-    "prompt": "A picture of a a flight attendant",
+    "prompt": "A picture of a flight attendant",
     "words": ["Männlich", "Weiblich"],
     "type": "image"
   },
