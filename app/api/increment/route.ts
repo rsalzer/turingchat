@@ -1,26 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
-
-const redis = Redis.fromEnv();
-
-export async function POST(req: Request) {
-  const data = await req.json();
-  const hash: string = data.hash;
-  const keys: string[] = data.keys;
-  for await (const item of keys) {
-    await redis.hincrby(hash, item, 1);
-  }
-
-  const count = await redis.hgetall(hash);
-  return NextResponse.json({ count });
-}
+import {
+  getCountFromDynamoDB,
+  updateCountOnDynamoDB,
+} from "@/utils/awshandler";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const hash = url.searchParams.get("hash");
-  if (hash != null) {
-    const count = await redis.hgetall(hash);
-    return NextResponse.json({ count });
+  if (!hash) {
+    return NextResponse.json({});
   }
-  return NextResponse.json({});
+  try {
+    const response = await getCountFromDynamoDB(hash);
+    return NextResponse.json(response);
+  } catch (e) {
+    return NextResponse.json(e);
+  }
+}
+
+export async function POST(req: Request) {
+  const data = await req.json();
+  const hash: string = data.hash;
+  if (!hash) {
+    return NextResponse.json({});
+  }
+  const keys: string[] = data.keys;
+
+  try {
+    const response = await updateCountOnDynamoDB(hash, keys);
+    return NextResponse.json(response);
+  } catch (e: any) {
+    console.log(e);
+    return NextResponse.json({ message: e.message ?? "" });
+  }
 }

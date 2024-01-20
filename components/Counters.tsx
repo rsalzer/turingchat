@@ -16,6 +16,7 @@ export default function Counters({
   initialCount,
 }: CounterProps) {
   const [count, setCount] = useState(initialCount);
+  console.log("Count", count);
 
   const increment = async (keys: string[]) => {
     const response = await fetch("/api/increment", {
@@ -33,9 +34,12 @@ export default function Counters({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/increment?hash=${hashName}`, {
-        method: "GET",
-      });
+      const response = await fetch(
+        `/api/increment?hash=${encodeURIComponent(hashName)}`,
+        {
+          method: "GET",
+        }
+      );
       const data = await response.json();
       if (data != null) {
         const dataCount = data.count;
@@ -46,10 +50,9 @@ export default function Counters({
   }, [hashName, words]);
 
   useEffect(() => {
-    // console.log("Increment the words:", wordsToIncrement);
-    const wordsPlusTotal = [...wordsToIncrement, "TOTAL"];
+    console.log("Increment the words:", wordsToIncrement);
     if (wordsToIncrement.length > 0) {
-      increment(wordsPlusTotal);
+      increment(wordsToIncrement);
     }
   }, [wordsToIncrement]);
 

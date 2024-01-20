@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.496.0",
     "@aws-sdk/client-s3": "^3.495.0",
+    "@aws-sdk/lib-dynamodb": "^3.496.0",
     "@types/node": "^17.0.45",
-    "@upstash/redis": "^1.22.0",
     "ai": "2.1.28",
     "axios": "^1.6.1",
     "framer-motion": "^10.15.0",
-    "ioredis": "^5.3.2",
     "langchain": "^0.0.99",
     "next": "^13.5.4",
     "openai": "^4.16.1",
