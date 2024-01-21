@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import get from "axios";
 import sharp from "sharp";
 import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { updateRessourcesOnDynamoDB } from "@/utils/awshandler";
+import experiments from "@/public/experiments.json";
+import { ExperimentType } from "@/components/Experiment";
 
 async function testUpload(url: string, id: number) {
   const { data } = await get<ArrayBuffer>(url, {
@@ -23,15 +26,19 @@ async function testUpload(url: string, id: number) {
     .replace(/T/, "_") // replace T with a space
     .replace(/\..+/, "");
 
+  const key = `${id}/${dateString}.webp`;
+  const chosenExperiment = experiments[id] as ExperimentType; // experiments[0][params.id];
+
   const params = {
     Bucket: "turingagency-biastester",
-    Key: `${id}/${dateString}.webp`,
+    Key: key,
     Body: webpData,
     ContentType: "image/webp",
   };
   try {
     await s3Client.send(new PutObjectCommand(params));
     console.log("Successfully uploaded to S3");
+    await updateRessourcesOnDynamoDB(chosenExperiment.name, key);
   } catch (error) {
     console.log("Error while uploading to S3");
     console.log(error);

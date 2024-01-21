@@ -20,6 +20,10 @@ export const getCountFromDynamoDB = async (hash: string) => {
     Key: {
       name: hash,
     },
+    ProjectionExpression: "#c",
+    ExpressionAttributeNames: {
+      "#c": "count",
+    },
   });
 
   const response = await docClient.send(command);
@@ -55,4 +59,43 @@ export const updateCountOnDynamoDB = async (hash: string, keys: string[]) => {
   });
   const response = await docClient.send(command);
   return response.Attributes;
+};
+
+export const getImagesFromDynamoDB = async (hash: string) => {
+  const command = new GetCommand({
+    TableName: "turing-bias-count",
+    Key: {
+      name: hash,
+    },
+    ProjectionExpression: "#a",
+    ExpressionAttributeNames: {
+      "#a": "allObjects",
+    },
+  });
+
+  const response = await docClient.send(command);
+  // @ts-ignore
+  return response.Item.allObjects;
+};
+
+export const updateRessourcesOnDynamoDB = async (
+  hash: string,
+  ressourceName: string
+) => {
+  console.log(hash, ressourceName);
+  const command = new UpdateCommand({
+    TableName: "turing-bias-count",
+    Key: {
+      name: hash,
+    },
+    UpdateExpression: "SET #a = list_append(#a, :val)",
+    ExpressionAttributeNames: {
+      "#a": "allObjects",
+    },
+    ExpressionAttributeValues: {
+      ":val": [ressourceName],
+    },
+    ReturnValues: "NONE",
+  });
+  await docClient.send(command);
 };
