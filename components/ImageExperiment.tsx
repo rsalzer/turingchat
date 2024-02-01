@@ -57,11 +57,10 @@ const ImageExperiment = ({
       const responseJSON = await response.json();
       const revisedPrompt = responseJSON[0].revised_prompt;
       const url = responseJSON[0].url;
+      await uploadImage(url, chosenExperiment.id);
+      console.log("Upload completed");
       setImgUrl(url);
       setRevisedPrompt(revisedPrompt);
-      uploadImage(url, chosenExperiment.id).then(() =>
-        console.log("Upload completed")
-      );
     } catch (e) {
       if (typeof e === "string") {
         setError(e);
