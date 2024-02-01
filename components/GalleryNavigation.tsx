@@ -21,6 +21,7 @@ const GalleryNavigation = ({ imageExperiments }: GalleryNavigationType) => {
           }`}
           href={"/gallery/" + experiment.id}
           key={experiment.name}
+          prefetch={false}
         >
           {experiment.name}
         </Link>

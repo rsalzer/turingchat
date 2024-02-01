@@ -96,15 +96,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
         {/*>*/}
         {/*  <i>Freies Bild</i>*/}
         {/*</Link>*/}
-        <Link
-          className={`text-black hover:text-rot font-medium text-sm mt-4 ${
-            pathname == `/impressum` && "bg-rosa"
-          }`}
-          href={`/impressum`}
-          onClick={() => setIsOpen(false)}
-        >
-          Impressum
-        </Link>
+
         <Link
           className={`text-black hover:text-rot font-medium text-sm mt-4 ${
             pathname.startsWith(`/gallery`) && "bg-rosa"
@@ -113,6 +105,24 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
           onClick={() => setIsOpen(false)}
         >
           Galerie
+        </Link>
+        {/*<a*/}
+        {/*  className={`text-black hover:text-rot font-medium text-sm mt-1 ${*/}
+        {/*    pathname.startsWith(`/auswertung`) && "bg-rosa"*/}
+        {/*  }`}*/}
+        {/*  href={`/auswertung`}*/}
+        {/*  onClick={() => setIsOpen(false)}*/}
+        {/*>*/}
+        {/*  Auswertung*/}
+        {/*</a>*/}
+        <Link
+          className={`text-black hover:text-rot font-medium text-sm mt-4 ${
+            pathname == `/impressum` && "bg-rosa"
+          }`}
+          href={`/impressum`}
+          onClick={() => setIsOpen(false)}
+        >
+          Impressum
         </Link>
       </div>
     </>

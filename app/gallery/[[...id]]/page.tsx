@@ -1,5 +1,8 @@
 import InfiniteGalllery from "@/components/InfiniteGallery";
-import { getImagesFromDynamoDB } from "@/utils/awshandler";
+import {
+  getImagesFromDynamoDB,
+  getImagesFromDynamoDBV2,
+} from "@/utils/awshandler";
 import experiments from "@/public/experiments.json";
 import { ExperimentType } from "@/components/Experiment";
 
@@ -11,8 +14,11 @@ export default async function GalleryPage({
   let { id } = params;
   if (!id) id = "6";
   const chosenExperiment = experiments[parseInt(id)] as ExperimentType; // experiments[0][params.id];
-  const d = await getImagesFromDynamoDB(chosenExperiment.name);
-  const data = d.reverse();
+  const d1 = await getImagesFromDynamoDB(chosenExperiment.name);
+  const data1 = d1.reverse();
+  const d2 = await getImagesFromDynamoDBV2(chosenExperiment.name);
+  const data2 = d2 ? d2.map((element) => element.key.replace("i_", "")) : [];
+  const data = [...data2, ...data1];
   const count = data.length;
 
   const baseUrl =

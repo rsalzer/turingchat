@@ -41,6 +41,7 @@ const ImageExperiment = ({
   const [wordsToIncrement, setWordsToIncrement] = useState<string[]>([]);
   const [showInstructions, setShowInstructions] = useState(true);
   const [wordFound, setWordFound] = useState<null | string>(null);
+  const [key, setKey] = useState<string>();
   const [error, setError] = useState<string>();
 
   const createImage = async (prompt: string) => {
@@ -73,7 +74,7 @@ const ImageExperiment = ({
 
   const uploadImage = async (url: string, id: number) => {
     try {
-      await fetch("/api/upload", {
+      const response = await fetch("/api/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -81,15 +82,43 @@ const ImageExperiment = ({
           id: id,
         }),
       });
+      const responseJSON = await response.json();
+      const newKey = responseJSON.key;
+      console.log("newKey", newKey);
+      setKey(newKey);
     } catch (e) {
       console.log("Upload failed");
     }
   };
 
+  const classifyImage = async (
+    experiment: string,
+    key: string,
+    value: string
+  ) => {
+    try {
+      const response = await fetch("/api/classifyimage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          experiment: experiment,
+          key: key,
+          value: value,
+        }),
+      });
+      await response.json();
+      console.log("Successfully classified");
+    } catch (e) {
+      console.log("Classification failed");
+    }
+  };
+
   useEffect(() => {
+    console.log("Use Effect ChosenExperiment");
     setImgUrl(undefined);
     setRevisedPrompt(undefined);
     setError(undefined);
+    setKey(undefined);
     createImage(chosenExperiment.prompt);
   }, [chosenExperiment]);
 
@@ -99,6 +128,12 @@ const ImageExperiment = ({
       setShowRestartButton(true);
     }
   }, [imgUrl]);
+
+  useEffect(() => {
+    if (wordFound && wordFound.length > 0 && key) {
+      classifyImage(chosenExperiment.name, key, wordFound);
+    }
+  }, [wordFound]);
 
   return (
     <>
@@ -213,6 +248,7 @@ const ImageExperiment = ({
                       setWordsToIncrement([]);
                       setWordFound(null);
                       setError(undefined);
+                      setKey(undefined);
                       createImage(chosenExperiment.prompt);
                     }}
                   >

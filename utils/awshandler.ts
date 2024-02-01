@@ -2,6 +2,10 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   GetCommand,
+  PutCommand,
+  QueryCommand,
+  ScanCommand,
+  TransactWriteCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
@@ -13,6 +17,20 @@ const client = new DynamoDBClient({
   },
 });
 const docClient = DynamoDBDocumentClient.from(client);
+
+export const getAllItemsFromDynamoDB = async () => {
+  const command = new ScanCommand({
+    TableName: "turing-bias-count",
+    ProjectionExpression: "#n, #c",
+    ExpressionAttributeNames: {
+      "#c": "count",
+      "#n": "name",
+    },
+  });
+
+  const response = await docClient.send(command);
+  return response.Items;
+};
 
 export const getCountFromDynamoDB = async (hash: string) => {
   const command = new GetCommand({
@@ -78,11 +96,30 @@ export const getImagesFromDynamoDB = async (hash: string) => {
   return response.Item.allObjects;
 };
 
+export const getImagesFromDynamoDBV2 = async (experiment: string) => {
+  const command = new QueryCommand({
+    TableName: "turing-bias-tester",
+    KeyConditionExpression:
+      "#experiment = :experiment and begins_with(#key, :key)",
+    ExpressionAttributeValues: {
+      ":experiment": experiment,
+      ":key": "i_",
+    },
+    ExpressionAttributeNames: {
+      "#experiment": "experiment",
+      "#key": "key",
+    },
+    ProjectionExpression: "#key",
+    ScanIndexForward: false,
+  });
+  const response = await docClient.send(command);
+  return response.Items;
+};
+
 export const updateRessourcesOnDynamoDB = async (
   hash: string,
   ressourceName: string
 ) => {
-  console.log(hash, ressourceName);
   const command = new UpdateCommand({
     TableName: "turing-bias-count",
     Key: {
@@ -98,4 +135,66 @@ export const updateRessourcesOnDynamoDB = async (
     ReturnValues: "NONE",
   });
   await docClient.send(command);
+};
+
+export const createImageInDynamoDB = async (
+  hash: string,
+  ressourceName: string
+) => {
+  const command = new PutCommand({
+    TableName: "turing-bias-tester",
+    Item: {
+      experiment: hash,
+      key: "i_" + ressourceName,
+      value: "0_" + ressourceName,
+    },
+    ReturnValues: "NONE",
+  });
+  await docClient.send(command);
+};
+
+export const classifyImageInDynamoDB = async (
+  experiment: string,
+  key: string,
+  value: string
+) => {
+  const transaction = new TransactWriteCommand({
+    ReturnConsumedCapacity: "TOTAL",
+    TransactItems: [
+      {
+        Update: {
+          TableName: "turing-bias-tester",
+          Key: {
+            experiment: experiment,
+            key: "i_" + key,
+          },
+          UpdateExpression: "SET #value = :val",
+          ExpressionAttributeNames: {
+            "#value": "value",
+          },
+          ExpressionAttributeValues: {
+            ":val": value + "_" + key,
+          },
+        },
+      },
+      {
+        Update: {
+          TableName: "turing-bias-tester",
+          Key: {
+            experiment: experiment,
+            key: "count_" + value,
+          },
+          UpdateExpression: "SET #c = if_not_exists(#c, :initial) + :amount",
+          ExpressionAttributeNames: {
+            "#c": "count",
+          },
+          ExpressionAttributeValues: {
+            ":amount": 1,
+            ":initial": 0,
+          },
+        },
+      },
+    ],
+  });
+  await docClient.send(transaction, {});
 };

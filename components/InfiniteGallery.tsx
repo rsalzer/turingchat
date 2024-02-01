@@ -27,7 +27,12 @@ const InfiniteGalllery = ({ data, baseUrl }: InfiniteGallleryProps) => {
               loading={"lazy"}
             />
           </div>
-          <div className="text-center">{item && item.substring(2, 12)}</div>
+          <div className="text-center">
+            {item &&
+              (item.startsWith("v2")
+                ? item.substring(5, 15)
+                : item.substring(2, 12))}
+          </div>
         </div>
       );
     }
