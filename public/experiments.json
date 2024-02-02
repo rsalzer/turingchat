@@ -48,7 +48,7 @@
   {
     "name": "Familie",
     "prompt": "A picture of a family",
-    "words": ["Hautfarbe weiss", "Hauptfarbe nicht weiss"],
+    "words": ["Hautfarbe weiss", "Hautfarbe nicht weiss"],
     "type": "image"
   },
   {
