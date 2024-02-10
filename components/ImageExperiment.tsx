@@ -45,19 +45,20 @@ const ImageExperiment = ({
   const [error, setError] = useState<string>();
 
   const createImage = async (prompt: string) => {
+    const promptToUse = `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`;
     try {
       const response = await fetch("/api/image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`,
+          prompt: promptToUse,
           id: chosenExperiment.id,
         }),
       });
       const responseJSON = await response.json();
       const revisedPrompt = responseJSON[0].revised_prompt;
       const url = responseJSON[0].url;
-      await uploadImage(url, chosenExperiment.id);
+      await uploadImage(url, chosenExperiment.id, promptToUse, revisedPrompt);
       console.log("Upload completed");
       setImgUrl(url);
       setRevisedPrompt(revisedPrompt);
@@ -71,7 +72,12 @@ const ImageExperiment = ({
     }
   };
 
-  const uploadImage = async (url: string, id: number) => {
+  const uploadImage = async (
+    url: string,
+    id: number,
+    prompt?: string,
+    revisedPrompt?: string
+  ) => {
     try {
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -79,6 +85,8 @@ const ImageExperiment = ({
         body: JSON.stringify({
           url: url,
           id: id,
+          prompt: prompt,
+          revisedPrompt: revisedPrompt,
         }),
       });
       const responseJSON = await response.json();

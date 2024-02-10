@@ -14,11 +14,28 @@ export default async function GalleryPage({
   let { id } = params;
   if (!id) id = "6";
   const chosenExperiment = experiments[parseInt(id)] as ExperimentType; // experiments[0][params.id];
-  const d1 = await getImagesFromDynamoDB(chosenExperiment.name);
-  const data1 = d1.reverse();
-  const d2 = await getImagesFromDynamoDBV2(chosenExperiment.name);
-  const data2 = d2 ? d2.map((element) => element.key.replace("i_", "")) : [];
-  const data = [...data2, ...data1];
+  let data: string[] = [];
+  if (chosenExperiment || id == "0") {
+    if (id == "0") {
+      const d1 = await getImagesFromDynamoDBV2("Krankenhaus");
+      const data1 = d1
+        ? d1.map((element) => element.key.replace("i_", ""))
+        : [];
+      const d2 = await getImagesFromDynamoDBV2("FreeImage");
+      const data2 = d2
+        ? d2.map((element) => element.key.replace("i_", ""))
+        : [];
+      data = [...data2, ...data1];
+    } else {
+      const d1 = await getImagesFromDynamoDB(chosenExperiment.name);
+      const data1 = d1 ? d1.reverse() : [];
+      const d2 = await getImagesFromDynamoDBV2(chosenExperiment.name);
+      const data2 = d2
+        ? d2.map((element) => element.key.replace("i_", ""))
+        : [];
+      data = [...data2, ...data1];
+    }
+  }
   const count = data.length;
 
   const baseUrl =

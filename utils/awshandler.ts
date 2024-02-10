@@ -8,6 +8,7 @@ import {
   TransactWriteCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import { S3 } from "@aws-sdk/client-s3";
 
 const client = new DynamoDBClient({
   region: "eu-central-1",
@@ -17,6 +18,14 @@ const client = new DynamoDBClient({
   },
 });
 const docClient = DynamoDBDocumentClient.from(client);
+
+const s3Client = new S3({
+  region: "eu-central-1",
+  credentials: {
+    accessKeyId: process.env.AWS_IAM_USER_ACCESSKEY ?? "",
+    secretAccessKey: process.env.AWS_IAM_USER_SECRET_KEY ?? "",
+  },
+});
 
 export const getAllItemsFromDynamoDB = async () => {
   const command = new ScanCommand({
@@ -96,22 +105,46 @@ export const getImagesFromDynamoDB = async (hash: string) => {
   return response.Item.allObjects;
 };
 
-export const getImagesFromDynamoDBV2 = async (experiment: string) => {
-  const command = new QueryCommand({
-    TableName: "turing-bias-tester",
-    KeyConditionExpression:
-      "#experiment = :experiment and begins_with(#key, :key)",
-    ExpressionAttributeValues: {
-      ":experiment": experiment,
-      ":key": "i_",
-    },
-    ExpressionAttributeNames: {
-      "#experiment": "experiment",
-      "#key": "key",
-    },
-    ProjectionExpression: "#key",
-    ScanIndexForward: false,
-  });
+export const getImagesFromDynamoDBV2 = async (
+  experiment: string,
+  filter: string | undefined = undefined
+) => {
+  let command;
+  if (filter) {
+    command = new QueryCommand({
+      TableName: "turing-bias-tester",
+      IndexName: "value-index",
+      KeyConditionExpression:
+        "#experiment = :experiment and begins_with(#value, :value)",
+      ExpressionAttributeValues: {
+        ":experiment": experiment,
+        ":value": filter,
+      },
+      ExpressionAttributeNames: {
+        "#experiment": "experiment",
+        "#key": "key",
+        "#value": "value",
+      },
+      ProjectionExpression: "#key",
+      ScanIndexForward: false,
+    });
+  } else {
+    command = new QueryCommand({
+      TableName: "turing-bias-tester",
+      KeyConditionExpression:
+        "#experiment = :experiment and begins_with(#key, :key)",
+      ExpressionAttributeValues: {
+        ":experiment": experiment,
+        ":key": "i_",
+      },
+      ExpressionAttributeNames: {
+        "#experiment": "experiment",
+        "#key": "key",
+      },
+      ProjectionExpression: "#key",
+      ScanIndexForward: false,
+    });
+  }
   const response = await docClient.send(command);
   return response.Items;
 };
@@ -137,9 +170,28 @@ export const updateRessourcesOnDynamoDB = async (
   await docClient.send(command);
 };
 
+export const getImageFromOldDynamoDB = async (hash: string) => {
+  const command = new UpdateCommand({
+    TableName: "turing-bias-count",
+    Key: {
+      name: hash,
+    },
+    UpdateExpression: "REMOVE #a[0]",
+    ExpressionAttributeNames: {
+      "#a": "allObjects",
+    },
+    ReturnValues: "UPDATED_OLD",
+  });
+  const response = await docClient.send(command);
+  return response;
+};
+
 export const createImageInDynamoDB = async (
   hash: string,
-  ressourceName: string
+  ressourceName: string,
+  legacyDate?: string,
+  prompt?: string,
+  revisedPrompt?: string
 ) => {
   const command = new PutCommand({
     TableName: "turing-bias-tester",
@@ -147,6 +199,9 @@ export const createImageInDynamoDB = async (
       experiment: hash,
       key: "i_" + ressourceName,
       value: "0_" + ressourceName,
+      legacyDate: legacyDate,
+      prompt: prompt,
+      revisedPrompt: revisedPrompt,
     },
     ReturnValues: "NONE",
   });

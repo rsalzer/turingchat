@@ -9,7 +9,7 @@ type InfiniteGallleryProps = {
 };
 
 const InfiniteGalllery = ({ data, baseUrl }: InfiniteGallleryProps) => {
-  const itemsPerPage = 100;
+  const itemsPerPage = Math.min(data.length, 100);
   const [hasMore, setHasMore] = useState(true);
   const [records, setRecords] = useState(itemsPerPage);
 

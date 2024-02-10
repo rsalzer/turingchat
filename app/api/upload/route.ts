@@ -6,7 +6,12 @@ import { createImageInDynamoDB } from "@/utils/awshandler";
 import experiments from "@/public/experiments.json";
 import { ExperimentType } from "@/components/Experiment";
 
-async function imageUpload(url: string, id: number) {
+async function imageUpload(
+  url: string,
+  id: number,
+  prompt?: string,
+  revisedPrompt?: string
+) {
   const { data } = await get<ArrayBuffer>(url, {
     responseType: "arraybuffer",
   });
@@ -38,7 +43,13 @@ async function imageUpload(url: string, id: number) {
   try {
     await s3Client.send(new PutObjectCommand(params));
     console.log("Successfully uploaded to S3");
-    await createImageInDynamoDB(chosenExperiment.name, key);
+    let hash;
+    if (id === 0) {
+      hash = "FreeImage";
+    } else {
+      hash = chosenExperiment.name;
+    }
+    await createImageInDynamoDB(hash, key, undefined, prompt, revisedPrompt);
     return key;
   } catch (error) {
     console.log("Error while uploading to S3");
@@ -50,6 +61,8 @@ export async function POST(req: Request) {
   const data = await req.json();
   const url: string = data.url;
   const id: number = data.id;
-  const key = await imageUpload(url, id);
+  const prompt: string = data.prompt;
+  const revisedPrompt: string = data.revisedPrompt;
+  const key = await imageUpload(url, id, prompt, revisedPrompt);
   return NextResponse.json({ key });
 }

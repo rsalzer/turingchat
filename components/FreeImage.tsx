@@ -37,7 +37,9 @@ const FreeImage = () => {
       const url = responseJSON[0].url;
       setImgUrl(url);
       setRevisedPrompt(revised);
-      uploadImage(url, 0).then(() => console.log("Upload completed"));
+      uploadImage(url, 0, prompt, revised).then(() =>
+        console.log("Upload completed")
+      );
     } catch (e) {
       if (typeof e === "string") {
         setError(e);
@@ -47,7 +49,12 @@ const FreeImage = () => {
     }
   };
 
-  const uploadImage = async (url: string, id: number) => {
+  const uploadImage = async (
+    url: string,
+    id: number,
+    prompt?: string,
+    revisedPrompt?: string
+  ) => {
     try {
       await fetch("/api/upload", {
         method: "POST",
@@ -55,6 +62,8 @@ const FreeImage = () => {
         body: JSON.stringify({
           url: url,
           id: id,
+          prompt: prompt,
+          revisedPrompt: revisedPrompt,
         }),
       });
     } catch (e) {
