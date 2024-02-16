@@ -45,6 +45,7 @@ const ImageExperiment = ({
   const [error, setError] = useState<string>();
 
   const createImage = async (prompt: string) => {
+    console.log("Server: Create Image");
     const promptToUse = `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`;
     try {
       const response = await fetch("/api/image", {
@@ -121,13 +122,16 @@ const ImageExperiment = ({
   };
 
   useEffect(() => {
-    console.log("Use Effect ChosenExperiment");
-    setImgUrl(undefined);
-    setRevisedPrompt(undefined);
-    setError(undefined);
-    setKey(undefined);
-    createImage(chosenExperiment.prompt);
-  }, [chosenExperiment]);
+    console.log("Use Effect ShowInstructions");
+    if (!showInstructions) {
+      console.log("Show instructions false");
+      setImgUrl(undefined);
+      setRevisedPrompt(undefined);
+      setError(undefined);
+      setKey(undefined);
+      createImage(chosenExperiment.prompt);
+    }
+  }, [showInstructions]);
 
   useEffect(() => {
     if (imgUrl) {
