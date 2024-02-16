@@ -5,8 +5,15 @@ import InfiniteScroll from "react-infinite-scroller";
 import { ExperimentType } from "@/components/Experiment";
 import Button from "@/components/Button";
 
+export type Gallery = {
+  key: string;
+  value: string;
+  revisedPrompt: string;
+  prompt: string;
+};
+
 type InfiniteGallleryProps = {
-  data: string[];
+  data: Gallery[];
   baseUrl: string;
   experiment: ExperimentType | undefined;
   showAdmin: boolean;
@@ -45,7 +52,7 @@ const InfiniteGalllery = ({
     }
   };
 
-  const showItems = (posts: object[]) => {
+  const showItems = (posts: Gallery[]) => {
     const items = [];
     for (let i = 0; i < records; i++) {
       const item = posts[i];
@@ -55,8 +62,8 @@ const InfiniteGalllery = ({
             <div className="min-w-[300px] max-w-full bg-rosa aspect-square relative group">
               <img
                 src={`${baseUrl}/${item?.key.replace("i_", "")}`}
-                key={item}
-                alt={item}
+                key={item.key}
+                alt={item.key}
                 loading={"lazy"}
               />
               {item.value && !item.value.startsWith("0_") && (

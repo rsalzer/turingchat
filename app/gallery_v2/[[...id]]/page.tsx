@@ -1,4 +1,4 @@
-import InfiniteGalllery from "@/components/InfiniteGallery";
+import InfiniteGalllery, { Gallery } from "@/components/InfiniteGallery";
 import {
   getImagesFromDynamoDB,
   getImagesFromDynamoDBV2,
@@ -15,21 +15,16 @@ export default async function GalleryPage({
   let { id } = params;
   if (!id) id = ["6", "0"];
   let name, navigation;
-  let data = [];
+  let data: Gallery[] = [];
   let chosenExperiment;
   if (id[0] === "0") {
     navigation = <></>;
-    const d1: string[] = await getImagesFromDynamoDBV2("FreeImage");
-    const data1: string[] = d1
-      ? d1.map((element) => element.key.replace("i_", ""))
-      : [];
-    data.push(...d1);
+    const d1 = await getImagesFromDynamoDBV2("FreeImage");
+    if (d1) {
+      data.push(...(d1 as Gallery[]));
+    }
     const d2 = await getImagesFromDynamoDBV2("Krankenhaus");
-    const data2: string[] = d2
-      ? d2.map((element) => element.key.replace("i_", ""))
-      : [];
-    data.push(...d2);
-    console.log(data);
+    if (d2) data.push(...(d2 as Gallery[]));
   } else {
     const experimentNr = parseInt(id[0]) || 6;
     const filter = parseInt(id[1]) || 0;
@@ -40,14 +35,14 @@ export default async function GalleryPage({
       const data1: string[] = d1
         ? d1.map((element) => element.key.replace("i_", ""))
         : [];
-      data.push(...d1);
+      if (d1) data.push(...(d1 as Gallery[]));
     } else if (filter < 3) {
       const word = chosenExperiment.words[filter - 1];
       const d1 = await getImagesFromDynamoDBV2(chosenExperiment.name, word);
       const data1: string[] = d1
         ? d1.map((element) => element.key.replace("i_", ""))
         : [];
-      data.push(...d1);
+      if (d1) data.push(...(d1 as Gallery[]));
     }
     navigation = (
       <div className="flex items-center gap-3 my-2">

@@ -1,4 +1,4 @@
-import InfiniteGalllery from "@/components/InfiniteGallery";
+import InfiniteGalllery, { Gallery } from "@/components/InfiniteGallery";
 import {
   getImagesFromDynamoDB,
   getImagesFromDynamoDBV2,
@@ -14,11 +14,11 @@ export default async function GalleryPage({
   let { id } = params;
   if (!id) id = "6";
   const chosenExperiment = experiments[parseInt(id)] as ExperimentType; // experiments[0][params.id];
-  let data: string[] = [];
-  let count1: number;
-  let count2: number;
-  let wordcount1: number;
-  let wordcount2: number;
+  let data: Gallery[] = [];
+  let count1: number = 0;
+  let count2: number = 0;
+  let wordcount1: number = 0;
+  let wordcount2: number = 0;
   if (chosenExperiment || id == "0") {
     if (id == "0") {
       const d1 = await getImagesFromDynamoDBV2("Krankenhaus");
@@ -29,11 +29,11 @@ export default async function GalleryPage({
       const data2 = d2
         ? d2.map((element) => element.key.replace("i_", ""))
         : [];
-      data = [...d2, ...d1];
+      if (d2 && d1) data = [...(d2 as Gallery[]), ...(d1 as Gallery[])];
     } else {
       const d1 = await getImagesFromDynamoDB(chosenExperiment.name);
       const data1 = d1
-        ? d1.reverse().map((element) => {
+        ? d1.reverse().map((element: string) => {
             return {
               key: element,
             };
@@ -43,23 +43,25 @@ export default async function GalleryPage({
       // const data2 = d2
       //   ? d2.map((element) => element.key.replace("i_", ""))
       //   : [];
-      data = [...d2, ...data1];
+      if (d2 && data1) {
+        data = [...(d2 as Gallery[]), ...(data1 as Gallery[])];
+        wordcount1 = d2.reduce(
+          (previousValue, currentValue) =>
+            currentValue.value.startsWith(chosenExperiment.words[0])
+              ? previousValue + 1
+              : previousValue,
+          0
+        );
+        wordcount2 = d2.reduce(
+          (previousValue, currentValue) =>
+            currentValue.value.startsWith(chosenExperiment.words[1])
+              ? previousValue + 1
+              : previousValue,
+          0
+        );
+      }
       count1 = d1.length;
       count2 = d2 ? d2.length : 0;
-      wordcount1 = d2.reduce(
-        (previousValue, currentValue) =>
-          currentValue.value.startsWith(chosenExperiment.words[0])
-            ? previousValue + 1
-            : previousValue,
-        0
-      );
-      wordcount2 = d2.reduce(
-        (previousValue, currentValue) =>
-          currentValue.value.startsWith(chosenExperiment.words[1])
-            ? previousValue + 1
-            : previousValue,
-        0
-      );
     }
   }
   const count = data.length;
