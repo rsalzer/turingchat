@@ -6,8 +6,8 @@ import { boldFont, headingFont } from "@/app/fonts";
 import Navigation from "@/components/Navigation";
 
 export const metadata = {
-  title: "Turingchat",
-  description: "Ein Chat der Turingagency.",
+  title: "Biastest",
+  description: "Eine Bias-Testing-Station der Turingagency",
 };
 
 export default async function RootLayout({
