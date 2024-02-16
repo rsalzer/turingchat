@@ -125,7 +125,7 @@ export const getImagesFromDynamoDBV2 = async (
         "#key": "key",
         "#value": "value",
       },
-      ProjectionExpression: "#key",
+      ProjectionExpression: "#key, prompt, revisedPrompt, #value",
       ScanIndexForward: false,
     });
   } else {
@@ -140,8 +140,9 @@ export const getImagesFromDynamoDBV2 = async (
       ExpressionAttributeNames: {
         "#experiment": "experiment",
         "#key": "key",
+        "#value": "value",
       },
-      ProjectionExpression: "#key",
+      ProjectionExpression: "#key, prompt, revisedPrompt, #value",
       ScanIndexForward: false,
     });
   }
@@ -252,4 +253,27 @@ export const classifyImageInDynamoDB = async (
     ],
   });
   await docClient.send(transaction, {});
+};
+
+export const reclassifyImageInDynamoDB = async (
+  experiment: string,
+  key: string,
+  value: string
+) => {
+  const command = new UpdateCommand({
+    TableName: "turing-bias-tester",
+    Key: {
+      experiment: experiment,
+      key: "i_" + key,
+    },
+    UpdateExpression: "SET #value = :val",
+    ExpressionAttributeNames: {
+      "#value": "value",
+    },
+    ExpressionAttributeValues: {
+      ":val": value + "_" + key,
+    },
+  });
+  const response = await docClient.send(command);
+  return response;
 };

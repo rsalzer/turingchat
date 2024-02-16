@@ -10,16 +10,21 @@ type GalleryNavigationType = {
 
 const GalleryNavigation = ({ imageExperiments }: GalleryNavigationType) => {
   const pathname = usePathname();
-
+  const firstPart = pathname.split("/")[1];
+  const secondPart = pathname.split("/")[2];
+  // console.log(firstPart, secondPart);
   return (
-    <div className="flex items-center mb-3 gap-3">
+    <div className="flex items-center gap-3">
       {imageExperiments.map((experiment, index) => (
         <Link
-          className={`text-black hover:text-rot font-medium text-sm mt-2 ${
-            (pathname == `/gallery/${experiment.id}` && "bg-rosa") ||
-            (index === 0 && pathname === `/gallery` && "bg-rosa")
+          className={`text-black hover:text-rot font-medium text-sm ${
+            (secondPart == `${experiment.id}` && "bg-rosa") ||
+            (!secondPart &&
+              index === 0 &&
+              pathname.startsWith(`/gallery`) &&
+              "bg-rosa")
           }`}
-          href={"/gallery/" + experiment.id}
+          href={"/" + firstPart + "/" + experiment.id}
           key={experiment.name}
           prefetch={false}
         >

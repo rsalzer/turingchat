@@ -19,6 +19,8 @@ export type ImageExperimentType = {
   prompt: string;
 };
 
+const baseUrl = "https://turingagency-biastester.s3.eu-central-1.amazonaws.com";
+
 const ImageExperiment = ({
   chosenExperiment,
   initialCount,
@@ -64,6 +66,34 @@ const ImageExperiment = ({
       setImgUrl(url);
       setRevisedPrompt(revisedPrompt);
     } catch (e) {
+      if (typeof e === "string") {
+        setError(e);
+      } else if (e instanceof Error) {
+        setError(e.message); // works, `e` narrowed to Error
+      }
+      setShowRestartButton(true);
+    }
+  };
+
+  const getOldImage = async () => {
+    try {
+      console.log("SENDING");
+      const response = await fetch("/api/oldimage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: chosenExperiment.id,
+        }),
+      });
+      console.log("Response", response);
+      const responseJSON = await response.json();
+      console.log("ResponseJSON", responseJSON);
+      const newKey = responseJSON.newKey;
+      console.log("newKey", newKey);
+      setKey(newKey);
+      setImgUrl(baseUrl + "/" + newKey);
+    } catch (e) {
+      console.log("ERROR");
       if (typeof e === "string") {
         setError(e);
       } else if (e instanceof Error) {
@@ -129,7 +159,7 @@ const ImageExperiment = ({
       setRevisedPrompt(undefined);
       setError(undefined);
       setKey(undefined);
-      createImage(chosenExperiment.prompt);
+      getOldImage();
     }
   }, [showInstructions]);
 
@@ -260,7 +290,7 @@ const ImageExperiment = ({
                       setWordFound(null);
                       setError(undefined);
                       setKey(undefined);
-                      createImage(chosenExperiment.prompt);
+                      getOldImage();
                     }}
                   >
                     Erneut generieren

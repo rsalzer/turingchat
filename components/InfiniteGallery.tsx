@@ -2,39 +2,113 @@
 
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import { ExperimentType } from "@/components/Experiment";
+import Button from "@/components/Button";
 
 type InfiniteGallleryProps = {
   data: string[];
   baseUrl: string;
+  experiment: ExperimentType | undefined;
+  showAdmin: boolean;
 };
 
-const InfiniteGalllery = ({ data, baseUrl }: InfiniteGallleryProps) => {
+const InfiniteGalllery = ({
+  data,
+  baseUrl,
+  experiment,
+  showAdmin,
+}: InfiniteGallleryProps) => {
   const itemsPerPage = Math.min(data.length, 100);
   const [hasMore, setHasMore] = useState(true);
   const [records, setRecords] = useState(itemsPerPage);
 
-  const showItems = (posts: string[]) => {
+  const reclassifyImage = async (
+    experiment: string,
+    key: string,
+    value: string
+  ) => {
+    try {
+      const response = await fetch("/api/classifyimage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          experiment: experiment,
+          key: key,
+          value: value,
+          reclassify: true,
+        }),
+      });
+      await response.json();
+      console.log("Successfully classified");
+    } catch (e) {
+      console.log("Classification failed");
+    }
+  };
+
+  const showItems = (posts: object[]) => {
     const items = [];
     for (let i = 0; i < records; i++) {
       const item = posts[i];
-      items.push(
-        <div key={item}>
-          <div className="min-w-[300px] max-w-full bg-rosa aspect-square">
-            <img
-              src={`${baseUrl}/${item}`}
-              key={item}
-              alt={item}
-              loading={"lazy"}
-            />
+      if (item) {
+        items.push(
+          <div key={item.key}>
+            <div className="min-w-[300px] max-w-full bg-rosa aspect-square relative group">
+              <img
+                src={`${baseUrl}/${item?.key.replace("i_", "")}`}
+                key={item}
+                alt={item}
+                loading={"lazy"}
+              />
+              {item.value && !item.value.startsWith("0_") && (
+                <div className="absolute top-0 right-0 backdrop-brightness-50 text-white text-xs ps-2 pe-2 pt-1 pb-1">
+                  {item.value.split("_")[0]}
+                </div>
+              )}
+              {showAdmin && (
+                <div className="absolute inset-0 text-xs invisible text-white backdrop-brightness-[40%] p-1 group-hover:visible">
+                  <div>{item.prompt}</div>
+                  <br />
+                  {item.prompt != item.revisedPrompt && (
+                    <div>{item.revisedPrompt}</div>
+                  )}
+                  {experiment && (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          reclassifyImage(
+                            experiment.name,
+                            item.key.replace("i_", ""),
+                            experiment.words[0]
+                          );
+                        }}
+                      >
+                        {experiment.words[0]}
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reclassifyImage(
+                            experiment.name,
+                            item.key.replace("i_", ""),
+                            experiment.words[1]
+                          );
+                        }}
+                      >
+                        {experiment.words[1]}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="text-center">
+              {item.key &&
+                (item.key.startsWith("i_v2")
+                  ? item.key.substring(7, 27)
+                  : item.key.substring(2, 12))}
+            </div>
           </div>
-          <div className="text-center">
-            {item &&
-              (item.startsWith("v2")
-                ? item.substring(5, 15)
-                : item.substring(2, 12))}
-          </div>
-        </div>
-      );
+        );
+      }
     }
     return items;
   };
@@ -42,7 +116,7 @@ const InfiniteGalllery = ({ data, baseUrl }: InfiniteGallleryProps) => {
     console.log("LOAD MORE");
     console.log("Records", records);
     console.log("Data length", data.length);
-    if (records === data.length) {
+    if (records >= data.length) {
       setHasMore(false);
     } else {
       setRecords(records + itemsPerPage);
