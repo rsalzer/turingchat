@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { boldFont, headingFont, normalFont } from "@/app/fonts";
+import { boldFont, headingFont } from "@/app/fonts";
 import { UserMessage } from "@/components/UserMessage";
 import { OpenAIMessage } from "@/components/OpenAIMessage";
-import { useIdleTimer } from "react-idle-timer";
-import { useRouter } from "next/navigation";
 
 const FreeImage = () => {
   // const router = useRouter();
@@ -21,6 +19,7 @@ const FreeImage = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [imagePrompt, setImagePrompt] = useState<string>("");
   const [error, setError] = useState<string>();
+  const [withoutRevisedPrompt, setWithoutRevisedPrompt] = useState(false);
 
   const createImage = async (theprompt: string) => {
     try {
@@ -101,21 +100,10 @@ const FreeImage = () => {
                 <span>&nbsp;</span>
               )}
             </div>
-            {revisedPrompt && revisedPrompt != imagePrompt && (
+            {revisedPrompt && (
               <div>
                 <div className="text-xs">
                   <i>Revised Prompt</i>: {revisedPrompt}
-                </div>
-                <div
-                  className={`${normalFont.className} text-xs bg-white rounded-lg p-2 mt-4`}
-                >
-                  Das neuste Bild-Modell von OpenAI heisst DALL·E 3 und erschien
-                  im November 2023.
-                  <br /> Um Bilder zu verbessern, erweitert es selbständig die
-                  Prompts (<i>Enhanced Prompt</i>).
-                  <br /> Wir haben es gebeten, dies hier nicht zu tun, damit der
-                  Bias stärker zum Vorschein kommt. <br />
-                  Manchmal ignoriert Dall·E aber unsere Anweisung störrisch.
                 </div>
               </div>
             )}
@@ -123,15 +111,31 @@ const FreeImage = () => {
         </OpenAIMessage>
       </div>
       <div className="p-3 pr-2.5 bg-white/70 backdrop-blur shadow-[0_-1px_rgba(229,231,235,.53),0_5px_20px_-5px_rgba(0,0,0,.24)]">
+        <div
+          className="text-xs flex"
+          onClick={() => setWithoutRevisedPrompt(!withoutRevisedPrompt)}
+        >
+          <input
+            type={"checkbox"}
+            className={"m-1"}
+            checked={withoutRevisedPrompt}
+            // onChange={() => setWithoutRevisedPrompt(!withoutRevisedPrompt)}
+          />
+          <label className="m-1">Revised Prompt unterdrücken</label>
+        </div>
         <form
           className="relative flex items-center max-w-2xl mx-auto"
           onSubmit={(e) => {
             e.preventDefault();
             setImgUrl("generating");
-            createImage(prompt);
             setError(undefined);
-            setImagePrompt(prompt);
-            setPrompt("");
+            let promptToUse = prompt;
+            if (withoutRevisedPrompt) {
+              promptToUse = `DO NOT ENHANCE THE FOLLOWING PROMPT - DO NOT ADD ANY GENDER OR RACE TO IT - SO I CAN TEST IT: ${prompt}`;
+            }
+            setImagePrompt(promptToUse);
+            createImage(promptToUse);
+            // setPrompt("");
             setRevisedPrompt(undefined);
           }}
           onKeyUp={(e) => {
