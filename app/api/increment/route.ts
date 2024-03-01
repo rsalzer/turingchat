@@ -13,6 +13,12 @@ export async function GET(req: NextRequest) {
   try {
     const response = await getCountFromDynamoDB(hash);
     return NextResponse.json(response);
+    // {
+    //   status: 200,
+    //     headers: {
+    //   "Access-Control-Allow-Origin": `${process.env.DOMAIN_URL}`,
+    // },
+    // }
   } catch (e) {
     return NextResponse.json(e);
   }
