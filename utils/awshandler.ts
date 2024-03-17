@@ -209,6 +209,28 @@ export const createImageInDynamoDB = async (
   await docClient.send(command);
 };
 
+export const getUnclassifiedImageFromDynamoDB = async (experiment: String) => {
+  const command = new QueryCommand({
+    TableName: "turing-bias-tester",
+    IndexName: "value-index",
+    KeyConditionExpression:
+      "#experiment = :experiment and begins_with(#value, :value)",
+    ExpressionAttributeValues: {
+      ":experiment": experiment,
+      ":value": "0",
+    },
+    ExpressionAttributeNames: {
+      "#experiment": "experiment",
+      "#key": "key",
+      "#value": "value",
+    },
+    ProjectionExpression: "#key, prompt, revisedPrompt, #value",
+    ScanIndexForward: false,
+  });
+  const response = await docClient.send(command);
+  return response.Items;
+};
+
 export const classifyImageInDynamoDB = async (
   experiment: string,
   key: string,

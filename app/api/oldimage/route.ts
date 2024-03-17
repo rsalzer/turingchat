@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   createImageInDynamoDB,
   getImageFromOldDynamoDB,
+  getUnclassifiedImageFromDynamoDB,
 } from "@/utils/awshandler";
 import experiments from "@/public/experiments.json";
 import { ExperimentType } from "@/components/Experiment";
@@ -17,7 +18,19 @@ export async function POST(req: Request) {
   console.log("Getting Item of Experiment", name);
   const response = await getImageFromOldDynamoDB(name);
   if (!response || !response.Attributes) {
-    console.log("No response from DynamoDB or no more Items to move?");
+    if (!response) {
+      return NextResponse.json({});
+    }
+    const items = await getUnclassifiedImageFromDynamoDB(name);
+    if (items) {
+      const length = items.length;
+      const randomItem = items[Math.floor(Math.random() * length)];
+      const newKey = randomItem.key.replace("i_", "");
+      return NextResponse.json({ newKey });
+    }
+    console.log(
+      "No more unclassified items ... now we should generate new pictures again..."
+    );
     return NextResponse.json({});
   }
   const nameOfItemToMove = response.Attributes.allObjects[0];

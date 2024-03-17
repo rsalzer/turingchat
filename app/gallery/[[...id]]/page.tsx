@@ -75,7 +75,9 @@ export default async function GalleryPage({
         Bisher generierte Bilder: {count ?? "0"}{" "}
         <span className="float-right text-xs">
           {`(o: ${count1} / n: ${count2})`}
-          {` (1: ${wordcount1} / 2: ${wordcount2})`}
+          {` (1: ${wordcount1} / 2: ${wordcount2} / no: ${
+            count2 - wordcount1 - wordcount2
+          })`}
         </span>
       </h3>
       <InfiniteGalllery
