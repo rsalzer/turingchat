@@ -85,13 +85,18 @@ const ImageExperiment = ({
           id: chosenExperiment.id,
         }),
       });
-      console.log("Response", response);
+      // console.log("Response", response);
       const responseJSON = await response.json();
-      console.log("ResponseJSON", responseJSON);
-      const newKey = responseJSON.newKey;
-      console.log("newKey", newKey);
-      setKey(newKey);
-      setImgUrl(baseUrl + "/" + newKey);
+      // console.log("ResponseJSON", responseJSON);
+      if (responseJSON?.newImage) {
+        console.log("NEW IMAGE!!");
+        createImage(chosenExperiment.prompt);
+      } else {
+        const newKey = responseJSON.newKey;
+        console.log("newKey", newKey);
+        setKey(newKey);
+        setImgUrl(baseUrl + "/" + newKey);
+      }
     } catch (e) {
       console.log("ERROR");
       if (typeof e === "string") {
