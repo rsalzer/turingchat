@@ -1,4 +1,3 @@
-import NextAuth from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
 export const authOptions = {
@@ -6,12 +5,14 @@ export const authOptions = {
   url: process.env.NEXTAUTH_URL,
   providers: [
     DiscordProvider({
+      // @ts-ignore
       clientId: process.env.DISCORD_CLIENT_ID,
+      // @ts-ignore
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
       console.log(user);
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {
@@ -25,7 +26,3 @@ export const authOptions = {
     },
   },
 };
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };

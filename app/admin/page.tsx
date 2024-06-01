@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import AdminDashboard from "@/components/AdminDashboard";
 import SignInButton from "@/components/SignInButton";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
