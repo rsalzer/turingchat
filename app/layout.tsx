@@ -61,11 +61,11 @@ export default async function RootLayout({
       </head>
       <body className={`${boldFont.className} h-screen bg-grau flex flex-col`}>
         <header className="px-2 py-4 bg-rosa border-b border-gray-300 fixed w-full z-10 md:h-16 h-24">
-          <a href="/">
-            <h1 className={`${headingFont.className} text-2xl text-rot`}>
-              KÜNSTLICHE INTELLIGENZ UND IHRE VORURTEILE
-            </h1>
-          </a>
+          {/*<a href="/">*/}
+          <h1 className={`${headingFont.className} text-2xl text-rot`}>
+            KÜNSTLICHE INTELLIGENZ UND IHRE VORURTEILE
+          </h1>
+          {/*</a>*/}
         </header>
         <main className="flex flex-1 bg-grau h-100 md:mt-16 mt-24 relative">
           <div className="">
