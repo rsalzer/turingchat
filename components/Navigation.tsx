@@ -19,7 +19,7 @@ const Navigation = ({ imageExperiments, textExperiments }: NavigationType) => {
     <>
       {" "}
       <button
-        className="fixed right-4 -translate-y-[48px] sm:hidden"
+        className="fixed right-4 -translate-y-[48px] sm:hidden z-20"
         onClick={() => setIsOpen(!isOpen)}
       >
         <img src="/hamburger.svg" alt="hamburger" className="h-[24px]" />
