@@ -18,13 +18,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     strong: ({ children }) => (
       <b className={`${boldFont.className}`}>{children}</b>
     ),
-    img: (props) => (
-      <Image
-        sizes="100vw"
-        style={{ width: "100%", height: "auto" }}
-        {...(props as ImageProps)}
-      />
-    ),
+    img: (props) => <img style={{ width: "50%", height: "auto" }} {...props} />,
     ...components,
   };
 }

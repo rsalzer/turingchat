@@ -26,10 +26,7 @@ export default async function RootLayout({
   );
 
   return (
-    <html
-      className="antialiased h-full border-box m-0 p-0 box-border overflow-y-hidden"
-      lang="de"
-    >
+    <html className="antialiased h-full border-box" lang="de">
       <head>
         <link
           rel="icon"
@@ -62,22 +59,24 @@ export default async function RootLayout({
         {/*  href="https://www.turingagency.org/media/site/1247b213e9-1677497962/favicon-152x152.png"*/}
         {/*/>*/}
       </head>
-      <body
-        className={`${boldFont.className} h-screen bg-grau flex flex-col m-0 p-0 box-border`}
-      >
-        <header className="px-2 py-4 bg-rosa border-b border-gray-300">
+      <body className={`${boldFont.className} h-screen bg-grau flex flex-col`}>
+        <header className="px-2 py-4 bg-rosa border-b border-gray-300 fixed w-full z-5 md:h-16 h-24">
           <a href="/">
             <h1 className={`${headingFont.className} text-2xl text-rot`}>
               KÜNSTLICHE INTELLIGENZ UND IHRE VORURTEILE
             </h1>
           </a>
         </header>
-        <main className="flex flex-1 bg-grau h-100 overflow-hidden mt-2">
-          <Navigation
-            imageExperiments={imageExperiments}
-            textExperiments={textEperiments}
-          />
-          <div className="m-2 flex-1 overflow-scroll">{children}</div>
+        <main className="flex flex-1 bg-grau h-100 md:mt-16 mt-24 relative -z-10">
+          <div className="">
+            <div className="sticky top-20">
+              <Navigation
+                imageExperiments={imageExperiments}
+                textExperiments={textEperiments}
+              />
+            </div>
+          </div>
+          <div className="m-2 flex-1">{children}</div>
         </main>
       </body>
     </html>
